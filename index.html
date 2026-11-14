@@ -71,6 +71,12 @@
           <input type="range" id="image-opacity" min="0" max="100" step="5" value="60">
         </div>
         <div class="setting-block">
+          <p class="control-label">Apply to Moxgate</p>
+          <label class="checkbox-line" for="apply-on-site"><input type="checkbox" id="apply-on-site" checked> Enable cosmetic styling in the extension</label>
+          <label class="checkbox-line" for="image-on-site"><input type="checkbox" id="image-on-site"> Display uploaded image on Moxgate pages</label>
+          <p class="hint">An image placed into Moxgate's page styling can be inspected by scripts running on that page. For privacy, displaying it there is off by default. The workshop preview always stays local.</p>
+        </div>
+        <div class="setting-block">
           <p class="control-label">Theme backup</p>
           <div class="utility-actions">
             <button type="button" class="secondary" id="export-theme">Export JSON</button>
