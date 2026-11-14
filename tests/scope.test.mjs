@@ -91,7 +91,7 @@ async function loaded(path,theme){
  return f;
 }
 test("manifest loads a real extension stylesheet rather than injecting inline CSS",()=>{
- assert.deepEqual(manifest.content_scripts[0].css,["content.css"]);
+ assert.deepEqual(manifest.content_scripts[0].css,["content.css","home-portal.css"]);
  assert.doesNotMatch(js,/createElement\(["']style["']\)/);
  assert.match(css,/\[data-mge-tile\]/);
  assert.match(css,/data-mge-page="home"/);
