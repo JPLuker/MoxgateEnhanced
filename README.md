@@ -12,14 +12,14 @@ An unofficial, **unhosted Chromium extension** that gives the ordinary [Moxgate]
 - **Settings:** Click the extension toolbar icon to open **all controls in a compact popup**. No separate settings website or detour through Extension Details.
 - **Launch:** The popup includes an **Open Moxgate** button to launch the live site in an app-like browser window.
 
-**Gameplay is not restyled.** The content script explicitly excludes the \`/solo\` battlefield, multiplayer sessions, draft, conquest, and other routes that represent active games. Themes are only applied on selected known non-gameplay routes (home, deck browser, sets, guides, etc.). Unknown routes are left alone until verified.
+**Gameplay is not restyled.** The content script explicitly excludes the `/solo` battlefield, multiplayer sessions, draft, conquest, and other routes that represent active games. Themes are only applied on selected known non-gameplay routes (home, deck browser, sets, guides, etc.). Unknown routes are left alone until verified.
 
 ## Install / update (desktop Chrome, Chromium, Brave)
 
 1. Download or clone the repository.
-2. Go to \`chrome://extensions\` (or \`brave://extensions\`).
+2. Go to `chrome://extensions` (or `brave://extensions`).
 3. Turn on **Developer mode**.
-4. Choose **Load unpacked** and select the folder that contains \`manifest.json\`.
+4. Choose **Load unpacked** and select the folder that contains `manifest.json`.
 5. Pin **MoxgateEnhanced** to your browser toolbar.
 6. **Click the extension icon**: theme controls open in-place. Change a preset, pick colors, or choose your own artwork.
 7. Open Moxgate normally or click **Open Moxgate** inside the popup.
@@ -28,7 +28,7 @@ After updating the local repository, click **Reload** on the extension card. Sit
 
 ## Privacy
 
-- Themes and images are stored locally in \`chrome.storage.local\`. They are not uploaded to MoxgateEnhanced servers (there are none).
+- Themes and images are stored locally in `chrome.storage.local`. They are not uploaded to MoxgateEnhanced servers (there are none).
 - Displaying uploaded images *inside the third-party Moxgate page* is **off by default**. If turned on, those images can potentially be inspected by page scripts. Avoid sensitive/personal images.
 - Theme JSON exports include selected image data. Treat export files as private if they contain personal pictures.
 - MoxgateEnhanced does not inspect passwords, game state, deck contents, or network traffic.
@@ -38,13 +38,13 @@ After updating the local repository, click **Reload** on the extension card. Sit
 
 **Version 0.2.0: implementation committed, not yet visually verified in a real browser.** Static JavaScript/manifest and isolated route checks have been performed. The homepage-specific styling still requires testing against Moxgate's live DOM; some Tailwind/class-name selectors may not match after site updates. The first pass deliberately avoids destructive layout changes.
 
-The extension toolbar opens \`popup.html\`. There is no \`options_ui\`, no GitHub Pages deployment, no extra hosted website, and no standalone installer yet.
+The extension toolbar opens `popup.html`. There is no `options_ui`, no GitHub Pages deployment, no extra hosted website, and no standalone installer yet.
 
 For dependency-free regression tests, run:
 
-\`\`\`sh
+```sh
 node --test tests/*.test.mjs
-\`\`\`
+```
 
 ## Roadmap
 
