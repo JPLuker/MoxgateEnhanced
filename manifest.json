@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "MoxgateEnhanced",
+  "description": "Local-only themes and cosmetic styling for Moxgate.",
+  "version": "0.1.0",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://moxgate.com/*",
+    "https://www.moxgate.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://moxgate.com/*",
+        "https://www.moxgate.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "options_ui": {
+    "page": "index.html",
+    "open_in_tab": true
+  }
+}
