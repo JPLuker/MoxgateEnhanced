@@ -29,3 +29,12 @@ test("regular page styling is limited to Moxgate",()=>{
     "https://moxgate.com/*","https://www.moxgate.com/*"
   ]);
 });
+
+
+test("popup has fixed desktop extension width and page status",()=>{
+  const css=read("popup.css");
+  assert.match(css,/html\{width:398px;min-width:398px;/);
+  assert.doesNotMatch(css,/width:min\(398px,100vw\)/);
+  assert.match(html,/id="site-diagnostic"/);
+  assert.match(app,/mge:status/);
+});
