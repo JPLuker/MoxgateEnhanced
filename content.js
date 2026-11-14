@@ -26,6 +26,7 @@ function resetMarkers(){
  marked.clear();
 }
 function clear(){
+ window.MGEHomePortal?.unmount(true);
  resetMarkers();
  root.removeAttribute("data-mge-ui");root.removeAttribute("data-mge-page");root.removeAttribute("data-mge-preset");
  root.style.removeProperty("--mge-artwork");
@@ -75,6 +76,7 @@ function findAction(panel,name){
 }
 function markHome(){
  resetMarkers();
+ const panels={};const nativeActions={};
  mark(document.querySelector("header,nav,[role=banner]"),"data-mge-topbar","on");
  const headings=Array.from(document.querySelectorAll("h1,h2,h3,h4,[role=heading]"));
  const missing=[...Object.values(heroes),...Object.values(features)].filter(t=>!headings.some(h=>label(h)===t));
@@ -96,7 +98,9 @@ function markHome(){
   if(!panel)continue;
   mark(panel,"data-mge-tile",name);
   mark(heading,"data-mge-heading",name);
-  mark(findAction(panel,name),"data-mge-action",name);
+  panels[name]=panel;
+  nativeActions[name]=findAction(panel,name);
+  mark(nativeActions[name],"data-mge-action",name);
  }
  for(const [name,text]of Object.entries(features)){
   const heading=headings.find(h=>label(h)===text||label(h).startsWith(text+" "));
@@ -104,6 +108,7 @@ function markHome(){
   const panel=findPanel(heading,"feature");
   if(panel)mark(panel,"data-mge-tile",name);
  }
+ return {panels,actions:nativeActions};
 }
 function refresh(){
  const kind=classify(location.pathname);
@@ -113,7 +118,13 @@ function refresh(){
  if(art)root.style.setProperty("--mge-artwork",'url("'+art+'")');else root.style.removeProperty("--mge-artwork");
  root.setAttribute("data-mge-ui","on");root.setAttribute("data-mge-page",kind);
  root.setAttribute("data-mge-preset",["classic","molten","aether","night","custom"].includes(theme.preset)?theme.preset:"classic");
- if(kind==="home")markHome();else resetMarkers();
+ if(kind==="home"){
+  if(window.MGEHomePortal?.status?.dismissed){root.removeAttribute("data-mge-ui");root.removeAttribute("data-mge-page");resetMarkers();}
+  else if(!window.MGEHomePortal?.sourceActive()){
+   const sources=markHome();
+   window.MGEHomePortal?.mount(sources.panels,sources.actions);
+  }
+ }else{window.MGEHomePortal?.unmount(true);resetMarkers();}
  appliedRoute=location.pathname;
 }
 function scheduleScan(){
