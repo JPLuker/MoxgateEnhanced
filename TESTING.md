@@ -1,5 +1,21 @@
 # Testing
 
+## v0.2.2 — 2026-11-14
+
+**Release:** [UNTESTED v0.2.2](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.2-untested-chromium). Automated GitHub Actions verification [run 43611231778](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43611231778): 16 tests passed, 0 failed, packaged nine extension files, ZIP test and re-download SHA-256 verification passed.
+
+**Live browser verification still missing.** A representative DOM fixture verifies the hero-card marker logic, but it is not Moxgate's DOM.
+
+### Required hands-on acceptance checks
+1. Extract v0.2.2 into the **same** unpacked extension folder, reload extension and refresh Moxgate.
+2. On the homepage, confirm distinct **gold/stone** panels and buttons versus the original purple interface.
+3. Open the toolbar popup: it should be wide enough not to squeeze buttons into narrow columns. Read its **Homepage styled: N sections** diagnostic; zero means section detection failed.
+4. Open `/solo`. The popup should say **Gameplay unchanged**, and the battlefield should remain visually identical.
+
+Open bugs: [#1 homepage](https://github.com/JPLuker/MoxgateEnhanced/issues/1) and [#2 popup width](https://github.com/JPLuker/MoxgateEnhanced/issues/2). Do not close until real browser confirmation.
+
+---
+
 ## v0.2.1 — 2026-11-14
 
 **Status: UNTESTED in a real browser.** Automated source checks and CI release validation are required before shipping any ZIP. A successful GitHub Actions run is not hands-on proof.
