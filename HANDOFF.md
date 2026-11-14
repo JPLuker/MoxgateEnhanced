@@ -8,7 +8,7 @@ Unhosted browser extension that themes the regular Moxgate interface while leavi
 - `content.js` `findPanel()` now walks to the widest eligible single-card ancestor instead of picking the first inner wrapper. Regression test reproduced failure before the fix.
 - `content.js` `findAction()` now handles nested text spans/div controls, not only semantic buttons/links. A second regression test reproduced this gap before the fix.
 - `app.js` now displays panel and action match counts. `tests/scope.test.mjs` covers both bugs.
-- Manifest v0.2.3 is ready for automated UNTESTED release, pending CI verification. Do not describe the visual correction as accepted until tested in a real browser.
+- v0.2.3 UNTESTED release published and checksummed: https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.3-untested-chromium . GitHub Actions run 43615193780 passed 19 tests, 0 failed, and re-downloaded the ZIP to verify SHA-256. The first release candidate failed on a DOM-fixture counting bug, then passed after correcting its mock. Do not describe the visual correction as accepted until tested in a real browser.
 
 ## Latest correction, 2026-11-14
 - **v0.2.2** UNTESTED prerelease: https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.2-untested-chromium
