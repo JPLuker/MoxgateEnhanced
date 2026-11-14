@@ -74,3 +74,21 @@ test("disable/unmount restores the original mode strip",()=>{
  assert.equal(f.api.status.dismissed,false);
  assert.equal(f.main.children.length,1);
 });
+
+test("missing native Solo action restores the original controls rather than disabling or trapping navigation",()=>{
+ const f=fixture();f.actions.solo=null;f.api.mount(f.panels,f.actions);
+ const portal=f.main.children[0];
+ assert.equal(portal.querySelector("[data-mge-stage-action]").disabled,false);
+ portal.simulate("[data-mge-stage-action]",portal.querySelector("[data-mge-stage-action]"));
+ assert.equal(f.api.status.active,false);
+ assert.equal(f.api.status.dismissed,true);
+ assert.equal(f.row.getAttribute("data-mge-original-row"),null);
+});
+test("missing native Draft action returns to native page",()=>{
+ const f=fixture();f.actions.draft=null;f.api.mount(f.panels,f.actions);
+ const portal=f.main.children[0];const draft=portal.choices.find(b=>b.getAttribute("data-mge-choice")==="draft");
+ portal.simulate("[data-mge-choice]",draft);
+ portal.simulate("[data-mge-stage-action]",portal.querySelector("[data-mge-stage-action]"));
+ assert.equal(f.api.status.active,false);
+ assert.equal(f.row.getAttribute("data-mge-original-row"),null);
+});
