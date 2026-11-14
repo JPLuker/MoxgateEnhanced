@@ -10,7 +10,7 @@
 ### Testing
 - A red regression test reproduced the inner-card border issue, followed by a passing test after the fix.
 - A separate regression reproduced the nested Solo CTA case before it was fixed.
-- Live appearance of v0.2.3 still requires browser confirmation. The v0.2.2 screenshot showed 6 homepage sections detected but gold frames were inset; that issue is being corrected here.
+- v0.2.3 [UNTESTED release](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.3-untested-chromium) was published after 19 passing automated tests and post-publication checksum validation in [run 43615193780](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43615193780). Live appearance of v0.2.3 still requires browser confirmation. The v0.2.2 screenshot showed 6 homepage sections detected but gold frames were inset; that issue is being corrected here.
 
 ## [0.2.2] — 2026-11-14
 
