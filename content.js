@@ -7,10 +7,11 @@ const goodColor=(v,f)=>typeof v==="string"&&/^#[0-9a-f]{6}$/i.test(v)?v:f;
 const goodImage=v=>typeof v==="string"&&v.length<3000000&&/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(v)?v:null;
 function apply(theme){
  if(!theme||typeof theme!=="object")return;
+ if(theme.enabled===false){document.getElementById(id)?.remove();document.documentElement.classList.remove("mge-enabled");return;}
  const a=goodColor(theme.accent,"#d4af69"),s=goodColor(theme.surface,"#231b15"),
  b=goodColor(theme.backdrop,"#15120e"),t=goodColor(theme.text,"#f3e7ce");
  const opacity=Number.isInteger(theme.opacity)?Math.max(0,Math.min(theme.opacity,100))/100:0.6;
- const art=goodImage(theme.image);
+ const art=theme.siteImageEnabled===true?goodImage(theme.image):null;
  const layer=art?'linear-gradient(rgba(0,0,0,'+(1-opacity).toFixed(2)+'),rgba(0,0,0,'+(1-opacity).toFixed(2)+')),url("'+art+'")':"none";
  let node=document.getElementById(id);
  if(!node){node=document.createElement("style");node.id=id;(document.head||document.documentElement).append(node);}
