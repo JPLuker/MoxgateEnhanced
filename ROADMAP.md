@@ -36,6 +36,7 @@
 - [x] Select outer card container without crossing multi-card groups.
 - [x] Reproduce and correct nested/nonsemantic primary action matching.
 - [x] Show panel and CTA counts separately in popup diagnostics.
+- [x] Publish v0.2.3 as an UNTESTED ZIP; CI run 43615193780 passed 19 tests and revalidated the download.
 - [ ] Check full-card frames and themed CTAs in real Moxgate homepage.
 - [ ] Confirm gameplay untouched and review popup readability.
 
