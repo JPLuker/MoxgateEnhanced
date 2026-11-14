@@ -63,6 +63,7 @@ function fixture(path="/",theme={enabled:true,preset:"classic"}){
   if(s.includes("header"))return header;return null;
  },querySelectorAll(s){
   if(s.includes("[data-mge-tile]"))return all.filter(e=>e.getAttribute("data-mge-tile"));
+  if(s.includes("[data-mge-action]"))return all.filter(e=>e.getAttribute("data-mge-action"));
   if(s.includes("h1,h2"))return all.filter(e=>["h1","h2","h3","h4"].includes(e.tag));
   return [];
  },addEventListener(){}};
