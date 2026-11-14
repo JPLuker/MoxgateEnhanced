@@ -32,6 +32,8 @@ Choose **Export JSON** on one client, then **Import JSON** on another. Images ar
 
 - Images are accepted as PNG, JPEG, or WebP and capped at 2 MB each for portability.
 - Only colors and image data chosen by the user are retained; all storage is on the local device/browser profile.
+- Applying an uploaded image inside Moxgate is **off by default**. If enabled, the image becomes part of that third-party page’s visual styling and may be readable by its scripts. Do not enable it for private or sensitive pictures.
+- The extension provides a master **Enable cosmetic styling** toggle. It is enabled by default.
 - No external analytics, cloud sync, API keys, remote image downloads, or tracking.
 - Remove the saved image or reset the theme from the editor. Browser/site-data clearing also deletes PWA local data.
 - **Existing Moxgate functionality is not guaranteed to remain compatible with future DOM changes.** Test themed gameplay carefully.
