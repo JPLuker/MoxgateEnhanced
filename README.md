@@ -46,7 +46,7 @@ After updating the local repository, click **Reload** on the extension card. Sit
 
 ## Current state
 
-**Version 0.2.1: source and release automation, not yet visually verified in a real browser.** Static JavaScript/manifest and isolated route checks have been performed. The homepage-specific styling still requires testing against Moxgate's live DOM; some Tailwind/class-name selectors may not match after site updates. The first pass deliberately avoids destructive layout changes.
+**Version 0.2.2: new extension-injected CSS and homepage identification. Still awaiting live browser verification.** Static JavaScript/manifest and isolated route checks have been performed. The CSS is injected as an extension stylesheet; homepage panels are identified by visible headings. Real Moxgate rendering and the appearance in Chromium/Vivaldi have not yet been confirmed. The popup shows how many homepage panels were matched.
 
 The extension toolbar opens `popup.html`. There is no `options_ui`, no GitHub Pages deployment, no extra hosted website, and no standalone installer yet.
 
