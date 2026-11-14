@@ -38,6 +38,36 @@ jobs:
           node --check home-portal.js
           node --test tests/*.test.mjs
           node scripts/verify-extension.cjs .
+      - name: Render homepage fixture at desktop and compact widths
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v chromium || true)"
+          if [ -z "$CHROME" ]; then echo "::error::Chromium renderer unavailable"; exit 1; fi
+          mkdir -p dist/previews
+          URL="file://$PWD/tests/fixtures/home.html"
+          for size in 390x844 1280x720 1920x1080; do
+            width="$(echo "$size" | cut -d x -f 1)"
+            height="$(echo "$size" | cut -d x -f 2)"
+            "$CHROME" --headless=new --no-sandbox --disable-dev-shm-usage \
+              --disable-gpu --hide-scrollbars --no-first-run --disable-extensions \
+              --virtual-time-budget=1200 --window-size="$width,$height" \
+              --screenshot="dist/previews/home-$size.png" "$URL" >/tmp/mge-render.log 2>&1 || {
+                tail -50 /tmp/mge-render.log; exit 1;
+              }
+            test -s "dist/previews/home-$size.png"
+            node -e 'const b=require("node:fs").readFileSync(process.argv[1]);if(b.subarray(0,8).toString("hex")!=="89504e470d0a1a0a"||b.length<3000)process.exit(1);console.log("Rendered PNG",process.argv[1],"size",b.length)' "dist/previews/home-$size.png"
+          done
+          "$CHROME" --headless=new --no-sandbox --disable-dev-shm-usage \
+            --disable-gpu --disable-extensions --virtual-time-budget=1200 \
+            --dump-dom "$URL" > /tmp/mge-dom.html 2>/tmp/mge-dom-errors.log
+          grep -q 'data-visual-ready="true"' /tmp/mge-dom.html || {
+            echo "::error::Home menu was not actually rendered as a grid"; tail -30 /tmp/mge-dom-errors.log; exit 1;
+          }
+          echo "VISUAL_CAPTURE_BEGIN"
+          base64 -w0 dist/previews/home-1280x720.png
+          echo
+          echo "VISUAL_CAPTURE_END"
       - name: Decide release eligibility
         id: version
         shell: bash
