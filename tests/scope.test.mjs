@@ -25,7 +25,8 @@ function fixture(path="/",theme={enabled:true,preset:"classic"}){
    const matches=[];
    function walk(el){for(const child of el.children){if(
      sel.includes("h1,h2")&&["h1","h2","h3","h4"].includes(child.tag)||
-     sel.includes("a,button")&&["a","button"].includes(child.tag)
+     sel.includes("a,button")&&["a","button"].includes(child.tag)||
+     sel.includes("span,div,strong")&&["span","div","strong"].includes(child.tag)
    )matches.push(child);walk(child);}}
    walk(this);return matches;
   }
@@ -43,7 +44,10 @@ function fixture(path="/",theme={enabled:true,preset:"classic"}){
   outerCards[name.toLowerCase()]=card;
   const inner=new Element("div","",width-35,190,card);
   new Element("h2",name,140,35,inner);
-  new Element("button",action,155,38,inner);
+  if(name==="Solo"){
+   const simulatedControl=new Element("div","",155,38,inner);
+   new Element("span",action,120,20,simulatedControl);
+  }else new Element("button",action,155,38,inner);
  }
  const tutorials=new Element("section","",1300,160,main);
  for(const [name,width] of [["New to Magic?",1270],["Conquest",580],["Sagas",580]]){
@@ -143,4 +147,12 @@ test("homepage gold frames attach to whole cards, not inset text blocks",async()
    "Expected the outer card container for "+name);
  }
  for(const marked of f.tiles)assert.equal(marked.tag,"article","Gold frame must not surround an inner content element");
+});
+
+test("a text-only CTA nested in a styled control gets the marker, not just its label",async()=>{
+ const f=await loaded("/");
+ const soloAction=f.actions.find(x=>x.getAttribute("data-mge-action")==="solo");
+ assert.ok(soloAction,"Solo CTA must be recognized without button/a tag");
+ assert.equal(soloAction.tag,"div","Entire clickable visual surface should receive CTA styling");
+ assert.equal(f.actions.length,3);
 });
