@@ -1,91 +1,131 @@
+// Scope regression tests for the real content-script entry point and a representative homepage DOM.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { runInNewContext } from "node:vm";
+import {readFileSync} from "node:fs";
+import {runInNewContext} from "node:vm";
 
-const code = readFileSync(new URL("../content.js", import.meta.url), "utf8");
+const js=readFileSync(new URL("../content.js",import.meta.url),"utf8");
+const css=readFileSync(new URL("../content.css",import.meta.url),"utf8");
+const manifest=JSON.parse(readFileSync(new URL("../manifest.json",import.meta.url),"utf8"));
 
-async function launch(path, theme={enabled:true,preset:"classic"}) {
-  let pathname=path;
-  let style=null;
-  let changeListener;
-  let observerCallback;
-  const attributes=new Map();
-  const root={
-    setAttribute(k,v){attributes.set(k,v);},
-    removeAttribute(k){attributes.delete(k);},
-    getAttribute(k){return attributes.get(k);}
-  };
-  const document={
-    documentElement:root,
-    head:{append(node){style=node;}},
-    getElementById(id){return style?.id===id?style:null;},
-    createElement(tag){assert.equal(tag,"style");return {
-      id:"",textContent:"",remove(){style=null;}
-    };}
-  };
-  const chrome={
-    storage:{
-      local:{async get(){return {theme};}},
-      onChanged:{addListener(callback){changeListener=callback;}}
-    }
-  };
-  const listeners={};
-  const window={addEventListener(event,callback){listeners[event]=callback;}};
-  class MutationObserver {
-    constructor(callback){observerCallback=callback;}
-    observe(){}
-    disconnect(){}
+function fixture(path="/",theme={enabled:true,preset:"classic"}){
+ const all=[];
+ class Element{
+  constructor(tag,text="",width=300,height=200,parent=null){
+   this.tag=tag;this.textContent=text;this.attrs={};this.children=[];this.parentElement=parent;
+   this.width=width;this.height=height;this.childElementCount=0;
+   if(parent){parent.children.push(this);parent.childElementCount++;}
+   all.push(this);
   }
-  const location={get pathname(){return pathname;}};
-  runInNewContext(code,{chrome,document,window,location,MutationObserver});
-  await Promise.resolve();
-  await Promise.resolve();
-  return {
-    get active(){return root.getAttribute("data-mge-ui")==="on";},
-    get css(){return style?.textContent||"";},
-    navigate(next){pathname=next;observerCallback();},
-    change(next){changeListener({theme:{newValue:next}},"local");}
-  };
+  setAttribute(k,v){this.attrs[k]=v}
+  removeAttribute(k){delete this.attrs[k]}
+  getAttribute(k){return this.attrs[k]??null}
+  getBoundingClientRect(){return {width:this.width,height:this.height}}
+  querySelectorAll(sel){
+   const matches=[];
+   function walk(el){for(const child of el.children){if(
+     sel.includes("h1,h2")&&["h1","h2","h3","h4"].includes(child.tag)||
+     sel.includes("a,button")&&["a","button"].includes(child.tag)
+   )matches.push(child);walk(child);}}
+   walk(this);return matches;
+  }
+ }
+ const root=new Element("html","",1400,900);
+ root.clientWidth=1400;const properties=new Map();
+ root.style={setProperty(k,v){properties.set(k,v)},removeProperty(k){properties.delete(k)}};
+ const body=new Element("body","",1400,900,root);
+ const header=new Element("header","",1400,70,body);
+ const main=new Element("main","",1360,700,body);
+ const row=new Element("section","",1300,270,main);
+ for(const [name,width,action] of [["Play",360,"Play →"],["Solo",560,"Start a game →"],["Draft",340,"Start drafting →"]]){
+  const card=new Element("article","",width,245,row);
+  const inner=new Element("div","",width-35,130,card);
+  new Element("h2",name,140,35,inner);
+  new Element("button",action,155,38,inner);
+ }
+ for(const name of ["New to Magic?","Conquest","Sagas"]){
+  const card=new Element("article","",460,130,main);
+  new Element("h2",name,200,35,card);
+ }
+ let pathname=path,change,respond,onMutation;
+ const queue=[];
+ const doc={documentElement:root,body,querySelector(s){
+  if(s.includes("header"))return header;return null;
+ },querySelectorAll(s){
+  if(s.includes("[data-mge-tile]"))return all.filter(e=>e.getAttribute("data-mge-tile"));
+  if(s.includes("h1,h2"))return all.filter(e=>["h1","h2","h3","h4"].includes(e.tag));
+  return [];
+ },addEventListener(){}};
+ const chrome={storage:{
+  local:{get:async()=>({theme})},onChanged:{addListener(fn){change=fn}}
+ },runtime:{onMessage:{addListener(fn){respond=fn}}}};
+ const win={innerWidth:1400,addEventListener(){}};
+ class MutationObserver{constructor(fn){onMutation=fn;}observe(){}disconnect(){}}
+ runInNewContext(js,{document:doc,chrome,window:win,location:{get pathname(){return pathname}},
+ MutationObserver,setTimeout(fn){queue.push(fn)},console});
+ const drain=()=>{for(const fn of queue.splice(0))fn()};
+ return{
+  all,root,properties,drain,
+  get active(){return root.getAttribute("data-mge-ui")==="on"},
+  get tiles(){return all.filter(x=>x.getAttribute("data-mge-tile"))},
+  get actions(){return all.filter(x=>x.getAttribute("data-mge-action"))},
+  navigate(p){pathname=p;onMutation();drain()},
+  change(next){change({theme:{newValue:next}},"local")},
+  status(){let result;respond({type:"mge:status"},null,x=>result=x);return result}
+ };
 }
-
-test("the homepage and deck library receive the normal-UI theme",async()=>{
-  const home=await launch("/");
-  assert.equal(home.active,true);
-  assert.match(home.css,/main :is\(h1,h2,h3\)/);
-  const decks=await launch("/decks");
-  assert.equal(decks.active,true);
+async function loaded(path,theme){
+ const f=fixture(path,theme);
+ await Promise.resolve();await Promise.resolve();
+ return f;
+}
+test("manifest loads a real extension stylesheet rather than injecting inline CSS",()=>{
+ assert.deepEqual(manifest.content_scripts[0].css,["content.css"]);
+ assert.doesNotMatch(js,/createElement\(["']style["']\)/);
+ assert.match(css,/\[data-mge-tile\]/);
+ assert.match(css,/data-mge-page="home"/);
 });
-
-test("the solo battlefield and live play are never styled",async()=>{
-  for(const path of ["/solo","/solo/abc","/play/123","/draft/abc","/conquest/new","/match/abc"]){
-    const app=await launch(path);
-    assert.equal(app.active,false,path);
-    assert.equal(app.css,"",path);
-  }
+test("homepage matches three hero tiles and three primary actions",async()=>{
+ const f=await loaded("/");
+ assert.equal(f.active,true);
+ assert.deepEqual(f.tiles.filter(x=>["play","solo","draft"].includes(x.getAttribute("data-mge-tile"))).length,3);
+ assert.equal(f.actions.length,3);
+ assert.equal(f.status().tiles,6);
+ assert.equal(f.root.getAttribute("data-mge-page"),"home");
 });
-
-test("client-side navigation removes UI styles on entering gameplay",async()=>{
-  const app=await launch("/decks");
-  assert.equal(app.active,true);
-  app.navigate("/solo");
-  assert.equal(app.active,false);
-  assert.equal(app.css,"");
-  app.navigate("/");
-  assert.equal(app.active,true);
+test("gameplay routes never receive normal-UI styling",async()=>{
+ for(const path of ["/solo","/solo/abc","/play/123","/draft/123","/conquest/new","/match/abc","/sagas/1"]){
+  const f=await loaded(path);
+  assert.equal(f.active,false,path);
+  assert.equal(f.tiles.length,0,path);
+ }
 });
-
-test("disabling themes clears previously injected styling",async()=>{
-  const app=await launch("/");
-  app.change({enabled:false});
-  assert.equal(app.active,false);
-  assert.equal(app.css,"");
+test("entering gameplay clears all semantic markers and theme state",async()=>{
+ const f=await loaded("/");
+ assert.equal(f.tiles.length,6);
+ f.navigate("/solo");
+ assert.equal(f.active,false);
+ assert.equal(f.tiles.length,0);
+ f.navigate("/");
+ assert.equal(f.active,true);
+ assert.equal(f.tiles.length,6);
 });
-
-test("uploaded images are off by default, on only when enabled",async()=>{
-  const image="data:image/png;base64,aGVsbG8=";
-  const app=await launch("/",{enabled:true,image,siteImageEnabled:false});
-  assert.equal(app.css.includes(image),false);
-  app.change({enabled:true,image,siteImageEnabled:true});
-  assert.equal(app.css.includes(image),true);
+test("disabling theme clears styled state",async()=>{
+ const f=await loaded("/");
+ f.change({enabled:false});
+ assert.equal(f.active,false);
+ assert.equal(f.tiles.length,0);
+});
+test("images only enter third-party CSS variables when explicitly enabled",async()=>{
+ const art="data:image/png;base64,aGVsbG8=";
+ const f=await loaded("/",{enabled:true,image:art,siteImageEnabled:false});
+ assert.equal(f.properties.has("--mge-artwork"),false);
+ f.change({enabled:true,image:art,siteImageEnabled:true});
+ assert.match(f.properties.get("--mge-artwork"),/aGVsbG8/);
+ f.change({enabled:true,image:art,siteImageEnabled:false});
+ assert.equal(f.properties.has("--mge-artwork"),false);
+});
+test("unrecognized routes remain untouched",async()=>{
+ const f=await loaded("/some-new-game-mode");
+ assert.equal(f.active,false);
 });
