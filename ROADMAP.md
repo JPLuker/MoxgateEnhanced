@@ -10,6 +10,8 @@ Progress indicators below distinguish **scaffold implementation** from **tested 
 - [x] Local PNG/JPEG/WebP upload, remove, reset.
 - [x] Theme JSON export/import.
 - [x] Chromium extension applying cautious cosmetic styling to Moxgate.
+- [x] Explicit opt-in before exposing locally uploaded image data in Moxgate page styling.
+- [x] Dependency-free theme input validation tests included.
 - [ ] Verify live gameplay against the site's current DOM and interaction states.
 - [ ] Confirm PWA install behavior in target browsers/devices.
 - [ ] Accessibility audit and keyboard-only tests.
