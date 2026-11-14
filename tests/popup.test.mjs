@@ -25,6 +25,8 @@ test("the popup never embeds or mirrors live gameplay",()=>{
 });
 
 test("regular page styling is limited to Moxgate",()=>{
+  assert.deepEqual(manifest.content_scripts[0].js,["home-portal.js","content.js"]);
+  assert.deepEqual(manifest.content_scripts[0].css,["content.css","home-portal.css"]);
   assert.deepEqual(manifest.content_scripts[0].matches,[
     "https://moxgate.com/*","https://www.moxgate.com/*"
   ]);
