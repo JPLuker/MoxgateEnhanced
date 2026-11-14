@@ -2,6 +2,17 @@
 
 **Focus:** Theme the *regular website UI*, **not gameplay**. No hosted or mirrored website. The installed Chromium extension modifies approved non-gameplay pages on the live Moxgate origin.
 
+## v0.3.1 homepage redesign
+- [x] Replace the three main hero cards with a two-panel console-style menu.
+- [x] Preserve native Play, Solo and Draft buttons by delegating actions to them.
+- [x] Reuse existing large hero artwork when available; ship no extracted official artwork.
+- [x] One-click original Moxgate homepage fallback and unknown-layout safety.
+- [x] Popup preview matches new menu and reports whether it is active.
+- [x] 24 source tests and Chromium fixture render at 390×844, 1280×720 and 1920×1080.
+- [ ] Confirm redesigned menu, original actions, and art on live Moxgate in Vivaldi.
+- [ ] Confirm gameplay is visually unchanged on /solo in a real match.
+- [ ] Extend the distinct visual identity to other regular Moxgate pages.
+
 ## M1 — Direct extension settings
 - [x] Browser toolbar icon opens a self-contained settings popup (`popup.html`).
 - [x] No extension Details → Options detour.

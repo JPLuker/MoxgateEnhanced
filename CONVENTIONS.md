@@ -10,3 +10,8 @@
 
 - Inject page styles through `content_scripts.css`, not page-owned `<style>` tags. Changes in appearance require real browser checks, not only DOM-marker checks.
 - Use semantic markers for homepage panels and report recognized section count in popup diagnostics. CSS utility-class guesses alone are insufficient.
+
+- Homepage design must be a distinct console-style menu rather than another round of generic card borders and gradients.
+- `home-portal.js` may hide only the recognized hero strip. Every new mode button delegates to an existing Moxgate site control.
+- Missing or changed source markup must leave the original Moxgate interface accessible.
+- Render the feature in Chromium at narrow and desktop widths; inspect screenshots. Fixture checks are not live-site acceptance.

@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.3.1] — 2026-11-14
+
+### Added
+- Console-style homepage with a vertical Solo, Multiplayer and Draft selector and a large preview stage.
+- Uses Moxgate's own controls to start modes and can return to the original homepage.
+- Reuses existing large website artwork when available; no proprietary images bundled.
+- Updated toolbar preview and clear indication that the console menu is active.
+
+### Fixed
+- Removed wrongly inset gold frames on lower feature banners.
+- Repeat DOM scans no longer duplicate the console; re-renders can recreate it.
+- Safeguards retain the original homepage if the expected three source cards are missing.
+
+### Validation
+- 24 automated tests passed in GitHub Actions run 43627033069.
+- Chromium rendered fixture previews at 390×844, 1280×720, and 1920×1080. Each screenshot was reviewed.
+- **Still untested against the live Moxgate page in Vivaldi.** Fixture renders are not proof of live integration.
+
+## [0.3.0] — 2026-11-14
+
+### Added
+- Initial console-home source before the complete test and visual verification refinements in 0.3.1.
+
+
 ## [0.2.3] — 2026-11-14
 
 ### Fixed

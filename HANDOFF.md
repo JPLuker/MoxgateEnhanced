@@ -3,6 +3,19 @@
 ## Product
 Unhosted browser extension that themes the regular Moxgate interface while leaving live gameplay unchanged. Toolbar icon opens popup settings for presets, colors and local artwork.
 
+## Latest v0.3.1 work, 2026-11-14
+- The user's v0.2.3 screenshot showed that borders/fonts alone were not the requested redesign.
+- `home-portal.js`: mounts a two-panel console-style homepage, selects Solo/Multiplayer/Draft, reuses large live-page artwork, delegates the start action to original Moxgate controls, and offers an original-home fallback.
+- `home-portal.css`: responsive console layout, original hero strip hidden only when the replacement mounts.
+- `content.js` `markHome()` returns original panels and actions; `refresh()` mounts console only on recognized homepage and `clear()` removes it on game routes.
+- `popup.html`/`popup.css` preview the new layout; `app.js` reports active/fallback/unavailable status.
+- `tests/home-portal.test.mjs` checks selection, native clicks, repeated scan, recovery and incomplete layouts. `tests/fixtures/home.html` renders in Chromium at 390×844, 1280×720 and 1920×1080.
+- CI run 43627033069: **24 tests passed**, 3 viewport captures produced and visually reviewed.
+- The screenshots are a representative fixture, **not** live Moxgate. Actual Vivaldi integration and hero artwork remain unverified.
+- v0.3.0 prerelease was generated during integration; v0.3.1 is the complete follow-up candidate. Never overwrite released tags or assets.
+- Next: verify v0.3.1 in live Vivaldi. If the popup reports “console menu unavailable,” inspect source cards and row hierarchy before changing selectors. Check /solo gameplay remains untouched.
+- GitHub issues #1 and #2 remain open until acceptance.
+
 ## Latest v0.2.3 work, 2026-11-14
 - User screenshot of v0.2.2 established 6 homepage sections detected and gold styling visibly applied, but nested/inset gold rectangles and purple action controls remained.
 - `content.js` `findPanel()` now walks to the widest eligible single-card ancestor instead of picking the first inner wrapper. Regression test reproduced failure before the fix.

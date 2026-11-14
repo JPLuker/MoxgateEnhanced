@@ -6,13 +6,17 @@ An unofficial, **unhosted Chromium extension** that gives the ordinary [Moxgate]
 
 ## What it changes
 
-- **Homepage and regular UI:** Navigation, colors, headings, card-panel frames, rounded corners, and ordinary menu actions.
+- **Homepage:** Replaces the three generic homepage cards with a console-style mode menu for Solo, Multiplayer, and Draft. Its buttons call Moxgate's original controls, and the scenic stage reuses existing page artwork where available.
+- **Fallback:** One click restores the original Moxgate homepage. Unrecognized layouts are left intact.
+- **Other regular pages:** Light cosmetic color and typography changes only.
 - **Presets:** Stone Table, Molten Plane, Aether, and Night, plus a fully custom color palette.
 - **Images:** Users may select their own PNG, JPEG, or WebP backdrop (maximum 2 MB), save it locally, and choose whether to display it on Moxgate.
 - **Settings:** Click the extension toolbar icon to open **all controls in a compact popup**. No separate settings website or detour through Extension Details.
 - **Launch:** The popup includes an **Open Moxgate** button to launch the live site in a normal browser tab, so the extension toolbar remains accessible.
 
 **Gameplay is not restyled.** The content script explicitly excludes the `/solo` battlefield, multiplayer sessions, draft, conquest, and other routes that represent active games. Themes are only applied on selected known non-gameplay routes (home, deck browser, sets, guides, etc.). Unknown routes are left alone until verified.
+
+**Live browser validation remains pending.** The redesigned home rendered correctly in offline Chromium fixtures but may need adjustments for Moxgate's live markup. The extension popup reports whether the new console home is active.
 
 ## Download a release
 
@@ -46,7 +50,7 @@ After updating the local repository, click **Reload** on the extension card. Sit
 
 ## Current state
 
-**Version 0.2.2: new extension-injected CSS and homepage identification. Still awaiting live browser verification.** Static JavaScript/manifest and isolated route checks have been performed. The CSS is injected as an extension stylesheet; homepage panels are identified by visible headings. Real Moxgate rendering and the appearance in Chromium/Vivaldi have not yet been confirmed. The popup shows how many homepage panels were matched.
+**Version 0.3.1: console home menu, source tests and rendered-fixture verification completed; live-site acceptance pending.** Static JavaScript/manifest and isolated route checks have been performed. The CSS is injected as an extension stylesheet; homepage panels are identified by visible headings. Real Moxgate rendering and the appearance in Chromium/Vivaldi have not yet been confirmed. The popup shows how many homepage panels were matched.
 
 The extension toolbar opens `popup.html`. There is no `options_ui`, no GitHub Pages deployment, no extra hosted website, and no standalone installer yet.
 

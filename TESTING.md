@@ -1,5 +1,20 @@
 # Testing
 
+## v0.3.1 — 2026-11-14
+
+**UNTESTED against live Moxgate.** GitHub Actions run [43627033069](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43627033069) passed **24 tests, 0 failures** and rendered mock homepage screenshots at 390×844, 1280×720, and 1920×1080. All three PNGs were opened and reviewed. The fixture confirms a console menu replaces the original hero strip. This does not prove live DOM compatibility.
+
+### Hands-on checks for this build
+1. Install the new ZIP and refresh Moxgate. The homepage should show **Choose a mode** with a vertical selector and large preview, not the original three-column grid.
+2. Select Solo, Multiplayer, and Draft, and start a mode. Confirm native controls are reached.
+3. Click **Original Moxgate home** and confirm the old layout returns.
+4. Open `/solo` and confirm actual gameplay is unchanged.
+
+The popup reports **Console home active** when the replacement is installed and matched. If it says **Home detected · console menu unavailable**, use the original page until its current DOM can be inspected. Issues #1 and #2 stay open pending user verification.
+
+---
+
+
 ## v0.2.3 — 2026-11-14
 
 **Status: CI passed (19 tests, 0 failures), live browser acceptance pending.** [UNTESTED v0.2.3](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.3-untested-chromium) was built and reverified in [GitHub Actions run 43615193780](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43615193780). The previous v0.2.2 screenshot shows the theme is active and six homepage sections are detected. The gold frames were wrapped around inner text containers, and some primary CTAs remained purple.

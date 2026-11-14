@@ -19,3 +19,8 @@
 > nothing changed?
 
 **Observed issue:** Prior cosmetic CSS changes were too limited or not effective in the user's browser. No claim of successful homepage redesign without rendered comparison.
+
+2026-11-14, Joseph Luker:
+> no / minimal change
+
+**Decision:** Cosmetic borders and typography aren't sufficient. Build an actual Duels-inspired home menu layout, keep live Moxgate buttons and artwork, preserve an original-home fallback, and never alter gameplay.
