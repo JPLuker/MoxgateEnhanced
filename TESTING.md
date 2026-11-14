@@ -15,6 +15,9 @@ The popup reports **Console home active** when the replacement is installed and 
 ---
 
 
+
+**Release verification:** [v0.3.1 UNTESTED Chromium release](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.3.1-untested-chromium) was published by [CI run 43627632164](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43627632164). It passed 24 tests and rechecked the downloaded ZIP checksum. Live gameplay remains untested.
+
 ## v0.2.3 — 2026-11-14
 
 **Status: CI passed (19 tests, 0 failures), live browser acceptance pending.** [UNTESTED v0.2.3](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.3-untested-chromium) was built and reverified in [GitHub Actions run 43615193780](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43615193780). The previous v0.2.2 screenshot shows the theme is active and six homepage sections are detected. The gold frames were wrapped around inner text containers, and some primary CTAs remained purple.
