@@ -3,7 +3,7 @@
 const fs=require("node:fs");
 const path=require("node:path");
 const root=path.resolve(process.argv[2]||".");
-const required=["manifest.json","app.js","content.js","content.css","popup.html","popup.css","icon.svg","icon-192.png","icon-512.png"];
+const required=["manifest.json","app.js","content.js","content.css","home-portal.js","home-portal.css","popup.html","popup.css","icon.svg","icon-192.png","icon-512.png"];
 function fail(message){console.error("Extension verification failed:",message);process.exitCode=1;}
 for(const name of required){
   try{const s=fs.statSync(path.join(root,name));if(!s.isFile()||s.size===0)fail("Missing/empty "+name);}
@@ -20,8 +20,8 @@ const allowed=["https://moxgate.com/*","https://www.moxgate.com/*"];
 if(JSON.stringify(m.host_permissions)!==JSON.stringify(allowed))fail("Unexpected site access");
 if(m.content_scripts?.length!==1||
 JSON.stringify(m.content_scripts[0].matches)!==JSON.stringify(allowed)||
-JSON.stringify(m.content_scripts[0].js)!=='["content.js"]'||
-JSON.stringify(m.content_scripts[0].css)!=='["content.css"]')fail("Unexpected injection");
+JSON.stringify(m.content_scripts[0].js)!=='["home-portal.js","content.js"]'||
+JSON.stringify(m.content_scripts[0].css)!=='["content.css","home-portal.css"]')fail("Unexpected injection");
 const html=fs.readFileSync(path.join(root,"popup.html"),"utf8");
 if(/<iframe\b/i.test(html))fail("Remote iframe in popup");
 if(!html.includes("popup.css")||!html.includes("app.js"))fail("Missing popup scripts");
