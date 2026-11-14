@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MoxgateEnhanced — Appearance</title>
+<link rel="stylesheet" href="./popup.css">
+<script src="./app.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <div class="identity">
+    <span class="sigil" aria-hidden="true">M/E</span>
+    <div><strong>MoxgateEnhanced</strong><span class="subtitle">LOCAL APPEARANCE</span></div>
+  </div>
+  <label class="toggle" title="Enable enhanced appearance">
+    <span class="sr-only">Apply enhanced appearance</span>
+    <input id="apply-on-site" type="checkbox" checked>
+    <span class="track" aria-hidden="true"></span>
+  </label>
+</header>
+<main>
+  <div class="introline"><span>THEME WORKSHOP</span><span>v0.2</span></div>
+  <div class="field">
+    <label for="preset">Visual style</label>
+    <select id="preset">
+      <option value="classic">Duels-inspired · Stone Table</option>
+      <option value="molten">Duels-inspired · Molten Plane</option>
+      <option value="aether">Duels-inspired · Aether</option>
+      <option value="night">Duels-inspired · Night</option>
+      <option value="custom">Custom palette</option>
+    </select>
+  </div>
+  <div class="site-preview" aria-label="Appearance preview" id="battlefield-preview">
+    <div class="mini-nav"><span class="mini-brand">MOXGATE</span><span>EXPLORE · DECKS</span></div>
+    <div class="mini-tiles">
+      <div class="mini-tile"><small>FEATURED</small><strong>Play</strong><span>Multiplayer</span></div>
+      <div class="mini-tile"><small>COLLECTION</small><strong>Decks</strong><span>Browse & build</span></div>
+    </div>
+    <div class="preview-bottom"><span id="theme-name">Classic Tabletop</span><b>START →</b></div>
+  </div>
+  <p class="caption" id="preview-image-status">No custom background</p>
+  <fieldset class="palette">
+    <legend>COLORS</legend>
+    <div class="color-grid">
+      <label for="accent"><input id="accent" type="color" value="#d4af69">Accent</label>
+      <label for="surface"><input id="surface" type="color" value="#231b15">Panels</label>
+      <label for="backdrop"><input id="backdrop" type="color" value="#15120e">Background</label>
+      <label for="text-color"><input id="text-color" type="color" value="#f3e7ce">Text</label>
+    </div>
+  </fieldset>
+  <section class="artwork">
+    <h2>BACKGROUND ARTWORK</h2>
+    <label class="upload" for="image-upload">Choose image… <span>PNG · JPG · WEBP</span></label>
+    <input id="image-upload" type="file" accept="image/png,image/jpeg,image/webp">
+    <div class="art-row"><button type="button" class="minor" id="remove-image">Remove image</button>
+      <label for="image-opacity">Opacity <output id="opacity-value" for="image-opacity">60%</output></label>
+    </div>
+    <input type="range" id="image-opacity" min="0" max="100" step="5" value="60">
+    <label class="check" for="image-on-site"><input type="checkbox" id="image-on-site"> Show image on Moxgate pages</label>
+    <p class="footnote">Artwork stays in local extension storage. Displaying it on Moxgate pages is optional; third-party page scripts may be able to access displayed image data.</p>
+  </section>
+  <div class="tools">
+    <button id="export-theme" type="button">Export theme</button>
+    <label class="file-button" for="import-theme">Import theme</label>
+    <input id="import-theme" type="file" accept=".json,application/json" hidden>
+    <button id="reset-theme" type="button">Reset</button>
+  </div>
+  <p class="status" id="status" role="status" aria-live="polite">Loading settings…</p>
+</main>
+<footer>
+  <button class="launch" id="open-moxgate" type="button">Open Moxgate <span aria-hidden="true">↗</span></button>
+  <span>Live website · Gameplay untouched</span>
+</footer>
+</body>
+</html>
