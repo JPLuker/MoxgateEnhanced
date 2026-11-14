@@ -8,7 +8,7 @@ const excluded=/(?:^|\/)(?:solo|play|match|game|battle|arena|table|draft|conques
 const ordinary=/^\/(?:[a-z]{2}\/)?(?:decks|sets|guides|faq|learn|leaderboard|explore|cards|settings|account)(?:\/[^/]*){0,3}$/i;
 const heroes={play:"play",solo:"solo",draft:"draft"};
 const features={tutorial:"new to magic?",conquest:"conquest",sagas:"sagas",star:"star trek"};
-const actions={play:/^(?:play|join|find a game)(?:\s*[→›])?$/i,solo:/^start a game/i,draft:/^start drafting/i};
+const actions={play:/^(?:play|join|find a game|play multiplayer)(?:\s*[→›])?$/i,solo:/^(?:start (?:a |solo )?game|play solo|solo duel|play against (?:the )?ai)(?:\s*[→›])?$/i,draft:/^(?:start (?:a )?draft(?:ing)?|draft (?:it|now|a deck)|play draft)(?:\s*[→›])?$/i};
 let theme=null,appliedRoute="",scanScheduled=false;
 function classify(path){
  const clean=(path||"/").replace(/\/+$/,"")||"/";
@@ -56,7 +56,7 @@ function findAction(panel,name){
  const pattern=actions[name];
  if(!pattern)return null;
  for(const el of panel.querySelectorAll("a,button,[role=button]")){
-  if(pattern.test(label(el)))return el;
+  if(pattern.test(label(el))||pattern.test((el.getAttribute("aria-label")||"").trim()))return el;
  }
  // Some site controls are styled DIVs containing a text SPAN without a
  // semantic button element. Mark their whole visible surface, not the text.
