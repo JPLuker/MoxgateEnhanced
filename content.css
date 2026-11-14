@@ -1,0 +1,61 @@
+/* MoxgateEnhanced: extension-injected cosmetics; game routes are excluded by content.js. */
+html[data-mge-ui="on"] {
+  --mge-accent:#d4af69;--mge-surface:#231b15;--mge-backdrop:#15120e;--mge-text:#f3e7ce;
+  --mge-darkwash:rgba(30,19,9,.55);
+  color-scheme:dark;
+}
+html[data-mge-ui="on"][data-mge-preset="molten"]{--mge-darkwash:rgba(57,18,8,.58)}
+html[data-mge-ui="on"][data-mge-preset="aether"]{--mge-darkwash:rgba(8,27,44,.62)}
+html[data-mge-ui="on"][data-mge-preset="night"]{--mge-darkwash:rgba(14,9,34,.64)}
+html[data-mge-ui="on"] body{background-color:var(--mge-backdrop)!important;color:var(--mge-text)}
+html[data-mge-ui="on"] :is(h1,h2,h3,h4)[data-mge-heading],
+html[data-mge-ui="on"] main :is(h1,h2,h3,h4){
+  font-family:Georgia,"Times New Roman",serif!important;letter-spacing:.01em!important
+}
+html[data-mge-ui="on"] [class*="border-purple"],
+html[data-mge-ui="on"] [class*="border-violet"]{border-color:var(--mge-accent)!important}
+html[data-mge-ui="on"] :is(a,button)[class*="bg-purple"],
+html[data-mge-ui="on"] :is(a,button)[class*="bg-violet"]{
+ background:var(--mge-accent)!important;border-color:var(--mge-accent)!important;
+ color:var(--mge-backdrop)!important;box-shadow:0 2px 0 #0009!important
+}
+/* Homepage redesign: CSS is injected by the extension, independent of site CSP. */
+html[data-mge-ui="on"][data-mge-page="home"]{background:#100e0a!important}
+html[data-mge-ui="on"][data-mge-page="home"] body{
+ background-color:var(--mge-backdrop)!important;
+ background-image:var(--mge-artwork,radial-gradient(ellipse at 50% 20%,#54463144,transparent 56%),repeating-linear-gradient(45deg,#ffffff03 0 2px,transparent 2px 22px))!important;
+ background-attachment:fixed!important;background-size:cover!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] [data-mge-topbar="on"]{
+ background:var(--mge-surface)!important;border-bottom:2px solid var(--mge-accent)!important;
+ box-shadow:0 4px 16px #000b!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] [data-mge-tile]{
+ border:2px solid var(--mge-accent)!important;border-radius:2px!important;
+ box-shadow:inset 0 0 0 999px var(--mge-darkwash),inset 0 0 0 3px #0008,0 12px 32px #000a!important;
+ outline:1px solid #000c!important;outline-offset:-4px!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] [data-mge-tile="solo"]{
+ border-top-width:4px!important;
+ box-shadow:inset 0 0 0 999px var(--mge-darkwash),inset 0 0 0 4px #0008,0 14px 36px #000b!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] [data-mge-heading]{
+ color:var(--mge-text)!important;font-family:Georgia,"Times New Roman",serif!important;
+ letter-spacing:.02em!important;text-shadow:1px 2px 3px #000e!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] [data-mge-action]{
+ background:linear-gradient(180deg,var(--mge-accent),color-mix(in srgb,var(--mge-accent),#382512 30%))!important;
+ color:#110e09!important;border:1px solid #f0daaa!important;border-radius:2px!important;
+ font-weight:700!important;box-shadow:0 3px 0 #0009,inset 0 1px 0 #fff6!important;text-shadow:none!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] [data-mge-tile] :is(a,button):not([data-mge-action]){
+ border-radius:3px!important;border-color:var(--mge-accent)!important;box-shadow:none!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] :is([data-mge-tile="tutorial"],[data-mge-tile="conquest"],[data-mge-tile="sagas"]){
+ border-width:1px 1px 3px!important;
+ box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--mge-darkwash),transparent 30%),0 8px 28px #0008!important
+}
+html[data-mge-ui="on"][data-mge-page="home"] :is([class*="rounded-xl"],[class*="rounded-2xl"],[class*="rounded-3xl"]){border-radius:3px!important}
+@media(prefers-reduced-motion:reduce){
+ html[data-mge-ui="on"] *{scroll-behavior:auto!important}
+}
