@@ -26,17 +26,26 @@ function sourceActive(){return Boolean(state.portal?.isConnected&&state.row&&doc
 function sourceImage(panel){
  if(!panel)return null;
  const descendants=[panel,...Array.from(panel.querySelectorAll("img,*")).slice(0,140)];
+ let best=null,largest=0;
  for(const element of descendants){
+  const rect=element.getBoundingClientRect();
+  const area=Math.max(0,rect.width)*Math.max(0,rect.height);
+  if(rect.width<140||rect.height<110||area<14000)continue;
+  const candidates=[];
   if(element.tagName?.toLowerCase()==="img"){
    const src=element.currentSrc||element.src||"";
-   if(/^https?:\/\/[^\n\r"\\]+$/.test(src)&&src.length<1600)return 'url("'+src+'")';
+   if(/^https?:\/\/[^\n\r"\\]+$/.test(src)&&src.length<1600)candidates.push('url("'+src+'")');
   }
   try{
-   const background=getComputedStyle(element).backgroundImage;
-   if(background&&background!=="none"&&background.includes("url("))return background;
+   const bg=getComputedStyle(element).backgroundImage;
+   if(bg&&bg!=="none"&&bg.includes("url("))candidates.push(bg);
+   // Moxgate may put its hero illustrations on a pseudo-element.
+   const before=getComputedStyle(element,"::before").backgroundImage;
+   if(before&&before!=="none"&&before.includes("url("))candidates.push(before);
   }catch{}
+  if(candidates.length&&area>largest){best=candidates[0];largest=area;}
  }
- return null;
+ return best;
 }
 function unmount(resetDismissal=false){
  if(state.row)state.row.removeAttribute("data-mge-original-row");
