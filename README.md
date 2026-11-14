@@ -14,6 +14,16 @@ An unofficial, **unhosted Chromium extension** that gives the ordinary [Moxgate]
 
 **Gameplay is not restyled.** The content script explicitly excludes the `/solo` battlefield, multiplayer sessions, draft, conquest, and other routes that represent active games. Themes are only applied on selected known non-gameplay routes (home, deck browser, sets, guides, etc.). Unknown routes are left alone until verified.
 
+## Download a release
+
+Download the newest **UNTESTED Chromium extension** ZIP from [GitHub Releases](https://github.com/JPLuker/MoxgateEnhanced/releases). The asset includes the extension itself, with `manifest.json` at its root.
+
+**First install:** Download the ZIP, extract it into a permanent folder, then go to `chrome://extensions` (or `brave://extensions`) → enable Developer mode → **Load unpacked** → select that extracted folder.
+
+**Updating:** Download the newer ZIP, extract over the same folder, and click **Reload** on the extension's card. Don't remove/reinstall unnecessarily; removing an extension can delete locally saved themes. Export a theme backup before any major change.
+
+This is a browser extension, not a standalone executable. No one-click installer or automatic update is provided. The ZIP is unsigned and has not yet been confirmed in a real browser.
+
 ## Install / update (desktop Chrome, Chromium, Brave)
 
 1. Download or clone the repository.
@@ -36,7 +46,7 @@ After updating the local repository, click **Reload** on the extension card. Sit
 
 ## Current state
 
-**Version 0.2.0: implementation committed, not yet visually verified in a real browser.** Static JavaScript/manifest and isolated route checks have been performed. The homepage-specific styling still requires testing against Moxgate's live DOM; some Tailwind/class-name selectors may not match after site updates. The first pass deliberately avoids destructive layout changes.
+**Version 0.2.1: source and release automation, not yet visually verified in a real browser.** Static JavaScript/manifest and isolated route checks have been performed. The homepage-specific styling still requires testing against Moxgate's live DOM; some Tailwind/class-name selectors may not match after site updates. The first pass deliberately avoids destructive layout changes.
 
 The extension toolbar opens `popup.html`. There is no `options_ui`, no GitHub Pages deployment, no extra hosted website, and no standalone installer yet.
 
@@ -44,6 +54,7 @@ For dependency-free regression tests, run:
 
 ```sh
 node --test tests/*.test.mjs
+node scripts/verify-extension.cjs .
 ```
 
 ## Roadmap

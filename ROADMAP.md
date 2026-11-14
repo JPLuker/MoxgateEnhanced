@@ -15,6 +15,13 @@
 - [ ] Verify local image chooser and storage on Chrome and Brave.
 - [ ] Keyboard / contrast testing.
 
+## Release packaging
+- [x] Add tag-based UNTESTED Chromium ZIP release automation.
+- [x] Add artifact validation and SHA-256 generation/checks.
+- [ ] Confirm GitHub Actions completes and the first release asset is downloadable.
+- [ ] Confirm extension load in Chrome and Brave on real hardware.
+- [ ] Promote a later version to tested only after hands-on confirmation.
+
 ## M2 — Homepage and regular UI
 - [x] Introduce scoped CSS for known non-gameplay routes.
 - [x] Exclude `/solo`, multiplayer, draft, game sessions and unknown routes.

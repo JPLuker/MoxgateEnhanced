@@ -1,0 +1,118 @@
+name: Verify and release Chromium extension
+on:
+  push:
+    branches: [main]
+    paths:
+      - "manifest.json"
+      - "app.js"
+      - "content.js"
+      - "popup.html"
+      - "popup.css"
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/release.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: moxgate-extension-release
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Check source and tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          node --check app.js
+          node --check content.js
+          node --test tests/*.test.mjs
+          node scripts/verify-extension.cjs .
+      - name: Decide release eligibility
+        id: version
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p 'require("./manifest.json").version')"
+          TAG="v$VERSION-untested-chromium"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "::error::Tag already exists without a release."
+            exit 1
+          fi
+          echo "publish=true" >> "$GITHUB_OUTPUT"
+      - name: Package extension and checksums
+        if: steps.version.outputs.publish == 'true'
+        id: artifact
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          FILE="MoxgateEnhanced-$VERSION-Chromium-unpacked-UNTESTED.zip"
+          mkdir -p dist/extension
+          cp manifest.json app.js content.js popup.html popup.css icon.svg icon-192.png icon-512.png dist/extension/
+          printf 'UNTESTED BUILD\nVersion: %s\nCommit: %s\nThis is a Chromium extension folder, not a click-to-install app.\nExtract the ZIP and load the folder through chrome://extensions using Developer mode > Load unpacked.\nFor updates, extract to the same folder and click Reload; do not remove the existing extension.\n' "$VERSION" "$GITHUB_SHA" > dist/extension/TEST_BUILD_README.txt
+          node scripts/verify-extension.cjs dist/extension
+          (cd dist/extension && zip -q -X -9 -r "../$FILE" .)
+          unzip -t "dist/$FILE"
+          test -s "dist/$FILE"
+          (cd dist && sha256sum "$FILE" > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+          echo "file=$FILE" >> "$GITHUB_OUTPUT"
+      - name: Prepare release notes
+        if: steps.version.outputs.publish == 'true'
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          FILE: ${{ steps.artifact.outputs.file }}
+        run: |
+          set -euo pipefail
+          cat > dist/RELEASE_NOTES.md <<EOF
+          > ⚠️ **UNTESTED BUILD.** These Chromium extension builds were produced automatically and have not been run by a person. They may not install, launch, or work correctly. No tested release is available yet.
+
+          MoxgateEnhanced $VERSION: popup theme editor, local images and scoped regular-page styling. Gameplay routes are excluded.
+
+          This ZIP is unsigned and must be loaded as an unpacked extension, not installed by double-clicking.
+
+          ## Downloads
+          - **$FILE** — extract and load the folder through Chrome/Brave Developer mode.
+          - **SHA256SUMS.txt** — SHA-256 verification for the ZIP.
+
+          To update, replace the files in the existing extension folder and click Reload in the Extensions page. Export your theme first as a backup.
+          EOF
+      - name: Publish and verify untested prerelease
+        if: steps.version.outputs.publish == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+          FILE: ${{ steps.artifact.outputs.file }}
+        run: |
+          set -euo pipefail
+          git tag "$TAG" "$GITHUB_SHA"
+          git push origin "refs/tags/$TAG"
+          gh release create "$TAG" "dist/$FILE" "dist/SHA256SUMS.txt" \
+            --verify-tag --prerelease --latest=false \
+            --title "UNTESTED — MoxgateEnhanced $VERSION (Chromium)" \
+            --notes-file dist/RELEASE_NOTES.md
+          meta="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG")"
+          echo "$meta" | jq -e '.prerelease == true and .draft == false' >/dev/null
+          echo "$meta" | jq -e --arg file "$FILE" '([.assets[] | select(.size > 0) | .name] | sort) == ([$file, "SHA256SUMS.txt"] | sort)' >/dev/null
+          mkdir -p dist/check
+          gh release download "$TAG" --pattern "*.zip" --pattern "SHA256SUMS.txt" --dir dist/check
+          (cd dist/check && sha256sum -c SHA256SUMS.txt)
+          echo "Published and reverified $TAG"
