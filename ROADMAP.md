@@ -2,9 +2,15 @@
 
 **Focus:** Theme the *regular website UI*, **not gameplay**. No hosted or mirrored website. The installed Chromium extension modifies approved non-gameplay pages on the live Moxgate origin.
 
+## Launch stability blocker (November 14, 2026)
+- [x] Remove programmatic native-action clicks from redesigned buttons and quick-format shortcuts.
+- [x] Restore original controls when the user chooses to launch a mode.
+- [ ] Capture Vivaldi extension/console crash details and confirm whether native Solo works without the extension.
+- [ ] Restore one-click mode launch only with a verified, safe browser integration.
+
 ## v0.3.1 homepage redesign
 - [x] Replace the three main hero cards with a two-panel console-style menu.
-- [x] Preserve native Play, Solo and Draft buttons by delegating actions to them.
+- [ ] Native Play, Solo and Draft delegation **disabled after repeated Vivaldi crashes**. Temporary safe behavior: expose the original controls for direct user clicks. Do not re-enable synthesized clicks without live DOM evidence and browser testing.
 - [x] Reuse existing large hero artwork when available; ship no extracted official artwork.
 - [x] One-click original Moxgate homepage fallback and unknown-layout safety.
 - [x] Popup preview matches new menu and reports whether it is active.
