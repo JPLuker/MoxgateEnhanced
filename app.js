@@ -5,7 +5,7 @@ aether:{name:"Aether Table",accent:"#7ab6d8",surface:"#172c3a",backdrop:"#09121c
 night:{name:"Night Play",accent:"#9b83d9",surface:"#251d33",backdrop:"#0d0b15",text:"#eee7fb"}};
 const $=id=>document.getElementById(id);
 const extension=location.protocol==="chrome-extension:"&&typeof chrome!=="undefined"&&!!chrome.storage?.local;
-const defaultTheme=()=>({...PRESETS.classic,preset:"classic",image:null,opacity:60,version:1});
+const defaultTheme=()=>({...PRESETS.classic,preset:"classic",image:null,opacity:60,enabled:true,siteImageEnabled:false,version:1});
 let current=defaultTheme(),queue=Promise.resolve();
 const isColor=value=>typeof value==="string"&&/^#[a-f0-9]{6}$/i.test(value);
 const isImage=value=>typeof value==="string"&&value.length<3000000&&/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(value);
@@ -16,6 +16,8 @@ function validate(source){
  if(["classic","molten","aether","night","custom"].includes(source.preset))result.preset=source.preset;
  if(source.image!=null){if(!isImage(source.image))throw Error("Unsupported or oversized embedded image.");result.image=source.image;}
  if(Number.isInteger(source.opacity)&&source.opacity>=0&&source.opacity<=100)result.opacity=source.opacity;
+ if(typeof source.enabled==="boolean")result.enabled=source.enabled;
+ if(typeof source.siteImageEnabled==="boolean")result.siteImageEnabled=source.siteImageEnabled;
  return result;
 }
 function openDb(){
@@ -52,6 +54,8 @@ function render(){
  $("text-color").value=current.text;
  $("preset").value=current.preset;
  $("image-opacity").value=String(current.opacity);
+ $("apply-on-site").checked=current.enabled;
+ $("image-on-site").checked=current.siteImageEnabled;
  $("opacity-value").textContent=current.opacity+"%";
  $("theme-name").textContent=PRESETS[current.preset]?.name||"Custom Theme";
  $("preview-image-status").textContent=current.image?"Custom image stored locally":"No custom background";
@@ -82,6 +86,8 @@ function events(){
   $(k).addEventListener("input",e=>modify({[k==="text-color"?"text":k]:e.target.value,preset:"custom"}));
  }
  $("image-opacity").addEventListener("input",e=>modify({opacity:Number(e.target.value)}));
+ $("apply-on-site").addEventListener("change",e=>modify({enabled:e.target.checked}));
+ $("image-on-site").addEventListener("change",e=>modify({siteImageEnabled:e.target.checked}));
  $("image-upload").addEventListener("change",async e=>{
   const file=e.target.files?.[0];if(!file)return;
   try{
@@ -104,7 +110,7 @@ function events(){
 }
 function pwa(){
  if(extension){$("mode-note").textContent="Extension mode: Save here, then open or refresh Moxgate to apply cosmetic changes.";return;}
- if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("./sw.js").catch(()=>{});
+ if("serviceWorker" in navigator&&(location.protocol==="https:"||["localhost","127.0.0.1"].includes(location.hostname)))navigator.serviceWorker.register("./sw.js").catch(()=>{});
  let promptEvent;
  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();promptEvent=e;$("install-pwa").hidden=false;});
  $("install-pwa").addEventListener("click",async()=>{if(promptEvent){promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;$("install-pwa").hidden=true;}});
