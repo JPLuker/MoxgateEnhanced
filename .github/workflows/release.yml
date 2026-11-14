@@ -68,6 +68,14 @@ jobs:
           base64 -w0 dist/previews/home-1280x720.png
           echo
           echo "VISUAL_CAPTURE_END"
+          echo "VISUAL_MOBILE_BEGIN"
+          base64 -w0 dist/previews/home-390x844.png
+          echo
+          echo "VISUAL_MOBILE_END"
+          echo "VISUAL_LARGE_BEGIN"
+          base64 -w0 dist/previews/home-1920x1080.png
+          echo
+          echo "VISUAL_LARGE_END"
       - name: Decide release eligibility
         id: version
         shell: bash
