@@ -6,6 +6,7 @@ on:
       - "manifest.json"
       - "app.js"
       - "content.js"
+      - "content.css"
       - "popup.html"
       - "popup.css"
       - "scripts/**"
@@ -64,7 +65,7 @@ jobs:
           set -euo pipefail
           FILE="MoxgateEnhanced-$VERSION-Chromium-unpacked-UNTESTED.zip"
           mkdir -p dist/extension
-          cp manifest.json app.js content.js popup.html popup.css icon.svg icon-192.png icon-512.png dist/extension/
+          cp manifest.json app.js content.js content.css popup.html popup.css icon.svg icon-192.png icon-512.png dist/extension/
           printf 'UNTESTED BUILD\nVersion: %s\nCommit: %s\nThis is a Chromium extension folder, not a click-to-install app.\nExtract the ZIP and load the folder through chrome://extensions using Developer mode > Load unpacked.\nFor updates, extract to the same folder and click Reload; do not remove the existing extension.\n' "$VERSION" "$GITHUB_SHA" > dist/extension/TEST_BUILD_README.txt
           node scripts/verify-extension.cjs dist/extension
           (cd dist/extension && zip -q -X -9 -r "../$FILE" .)
