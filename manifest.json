@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MoxgateEnhanced",
   "description": "Local-first Moxgate homepage and menu themes. Opens settings directly in the toolbar; gameplay untouched.",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "permissions": [
     "storage"
   ],
@@ -17,11 +17,13 @@
         "https://www.moxgate.com/*"
       ],
       "js": [
+        "home-portal.js",
         "content.js"
       ],
       "run_at": "document_start",
       "css": [
-        "content.css"
+        "content.css",
+        "home-portal.css"
       ]
     }
   ],
