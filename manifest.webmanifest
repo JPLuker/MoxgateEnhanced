@@ -1,0 +1,19 @@
+{
+  "name": "MoxgateEnhanced — Theme Workshop",
+  "short_name": "MoxgateEnhanced",
+  "description": "Local-first theme workshop and launcher for Moxgate",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#11100f",
+  "theme_color": "#17130f",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
