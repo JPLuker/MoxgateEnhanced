@@ -139,7 +139,9 @@ chrome.runtime?.onMessage?.addListener((msg,sender,respond)=>{
  if(msg?.type!=="mge:status")return;
  respond({mode:classify(location.pathname),enabled:root.getAttribute("data-mge-ui")==="on",
   tiles:document.querySelectorAll("[data-mge-tile]").length,
-  actions:document.querySelectorAll("[data-mge-action]").length});
+  actions:document.querySelectorAll("[data-mge-action]").length,
+  portal:window.MGEHomePortal?.status?.active===true,
+  originalHome:window.MGEHomePortal?.status?.dismissed===true});
 });
 window.addEventListener("popstate",scheduleScan);
 window.addEventListener("hashchange",scheduleScan);
