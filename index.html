@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17130f">
+  <meta name="description" content="Local-first themes and artwork for your Moxgate experience.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>MoxgateEnhanced — Theme Workshop</title>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="MoxgateEnhanced home"><span class="brand-mark" aria-hidden="true">M/E</span><span>Moxgate<span class="brand-accent">Enhanced</span></span></a>
+    <span class="offline-pill">LOCAL THEME WORKSHOP</span>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">UNOFFICIAL COMPANION</p>
+      <h1>Give the battlefield<br><em>your atmosphere.</em></h1>
+      <p>Change colors, choose a tabletop-inspired style, and use your own artwork. Your images and settings stay on this device.</p>
+      <div class="intro-actions">
+        <button class="primary" type="button" id="open-moxgate">Open Moxgate <span aria-hidden="true">↗</span></button>
+        <button class="secondary" type="button" id="install-pwa" hidden>Install launcher</button>
+      </div>
+      <p class="important-note" id="mode-note">The PWA launches Moxgate. A separate desktop extension is needed to apply themes within its pages.</p>
+    </section>
+    <section class="workspace" aria-label="Theme workshop">
+      <div class="preview-column">
+        <div class="section-heading"><div><p class="eyebrow">01 — VISUAL PREVIEW</p><h2>Battlefield study</h2></div><span>Illustrative preview</span></div>
+        <div class="battlefield" id="battlefield-preview">
+          <div class="battlefield-bar"><span class="mini-label">OPPONENT</span><span class="turn-number">20</span></div>
+          <div class="card-zone upper" aria-label="Example opponent cards"><div class="mini-card face-down"></div><div class="mini-card face-down"></div><div class="mini-card face-down"></div></div>
+          <div class="zone-rule"><span>THE BATTLEFIELD</span></div>
+          <div class="card-zone lower" aria-label="Example player cards"><div class="mini-card white"></div><div class="mini-card blue"></div><div class="mini-card red"></div><div class="mini-card green"></div><div class="mini-card black"></div></div>
+          <div class="battlefield-bar bottom"><span class="mini-label">YOU</span><button type="button" class="turn-button" tabindex="-1" aria-label="Visual preview: End turn" disabled>END TURN</button><span class="turn-number">20</span></div>
+        </div>
+        <div class="preview-caption"><span class="swatch" id="accent-swatch"></span><span id="theme-name">Classic Tabletop</span><span id="preview-image-status">No custom background</span></div>
+        <p class="important-note">This is a design preview, not a running game. The first extension build uses conservative, cosmetic-only styling; deeper battlefield changes require live integration testing.</p>
+      </div>
+      <div class="editor-column">
+        <div class="section-heading"><div><p class="eyebrow">02 — YOUR THEME</p><h2>Personalize</h2></div></div>
+        <div class="setting-block">
+          <label class="control-label" for="preset">Starting style</label>
+          <select id="preset">
+            <option value="classic">Classic Tabletop</option>
+            <option value="molten">Molten Plane</option>
+            <option value="aether">Aether Table</option>
+            <option value="night">Night Play</option>
+            <option value="custom">Custom</option>
+          </select>
+          <p class="hint">Inspired by classic digital card-table atmospheres. No original game art is bundled.</p>
+        </div>
+        <fieldset class="setting-block colors">
+          <legend class="control-label">Color palette</legend>
+          <label for="accent">Accent <input type="color" id="accent" value="#d4af69"></label>
+          <label for="surface">Panels <input type="color" id="surface" value="#231b15"></label>
+          <label for="backdrop">Backdrop <input type="color" id="backdrop" value="#15120e"></label>
+          <label for="text-color">Text <input type="color" id="text-color" value="#f3e7ce"></label>
+        </fieldset>
+        <div class="setting-block">
+          <label class="control-label" for="image-upload">Your background artwork</label>
+          <input type="file" id="image-upload" accept="image/png,image/jpeg,image/webp">
+          <p class="hint">PNG, JPG, or WebP, max 2 MB. Kept locally, never uploaded to a server.</p>
+          <button type="button" class="text-button" id="remove-image">Remove image</button>
+        </div>
+        <div class="setting-block">
+          <label class="control-label" for="image-opacity">Image visibility <output id="opacity-value" for="image-opacity">60%</output></label>
+          <input type="range" id="image-opacity" min="0" max="100" step="5" value="60">
+        </div>
+        <div class="setting-block">
+          <p class="control-label">Theme backup</p>
+          <div class="utility-actions">
+            <button type="button" class="secondary" id="export-theme">Export JSON</button>
+            <label class="secondary file-action" for="import-theme">Import JSON</label>
+            <input type="file" id="import-theme" accept=".json,application/json" hidden>
+            <button type="button" class="quiet" id="reset-theme">Reset</button>
+          </div>
+          <p class="hint">Export and import is how you move a theme between the PWA and the extension; there is no automatic synchronization.</p>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite">Ready. Settings are stored on this device.</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>MoxgateEnhanced is unofficial fan content, not approved or endorsed by Moxgate or Wizards of the Coast. Magic: The Gathering material belongs to its respective owners.</p>
+  </footer>
+</body>
+</html>
