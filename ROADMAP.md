@@ -1,48 +1,50 @@
 # MoxgateEnhanced roadmap
 
-**Architecture constraint: we DO NOT host the Moxgate website.** Every gameplay page is the live https://www.moxgate.com/ site. Local client tools alter presentation; the game and network functions remain Moxgate's.
+**Focus:** Theme the *regular website UI*, **not gameplay**. No hosted or mirrored website. The installed Chromium extension modifies approved non-gameplay pages on the live Moxgate origin.
 
-## M1 — Unhosted desktop companion
-- [x] Document the live-site-only architecture.
-- [x] Chromium extension theme editor, with no separate site or hosted PWA.
-- [x] Local-first color presets, image selection, import and export.
-- [x] Extension content script providing conservative cosmetic styling.
-- [x] Optional background-image exposure toggle, disabled by default.
-- [x] Toolbar action to open Moxgate in a dedicated browser popup window.
-- [x] Theme-format validation tests.
-- [ ] Validate popup behavior in real Chrome/Chromium.
-- [ ] Validate extension injection and gameplay states on live Moxgate.
-- [ ] Accessibility and keyboard-only checks.
+## M1 — Direct extension settings
+- [x] Browser toolbar icon opens a self-contained settings popup (\`popup.html\`).
+- [x] No extension Details → Options detour.
+- [x] Four Duels-inspired palettes plus editable colors and instant local saving.
+- [x] Local artwork selection/removal, opacity, optional site display.
+- [x] Theme export/import and full enable/disable toggle.
+- [x] Open Moxgate button within popup.
+- [x] Retire the separately hosted PWA and redundant options-page files.
+- [x] Popup wiring, URL scope, and basic route regression test source.
+- [ ] Verify popup behavior and scroll/overflow at actual browser popup size.
+- [ ] Verify local image chooser and storage on Chrome and Brave.
+- [ ] Keyboard / contrast testing.
 
-## M2 — Proper installable client (without hosting)
-- [ ] Evaluate packaged desktop Chromium/WebView wrapper that opens the **live** Moxgate origin.
-- [ ] Ensure locally applied themes work inside the wrapper without cross-origin iframe tricks.
-- [ ] Test Moxgate login, sessions, navigation, multiplayer, and browser protections.
-- [ ] Package installer and portable builds for Windows/Linux first.
-- [ ] Evaluate Android WebView shell as a separate installable APK.
-- [ ] Preserve browser extension as lighter-weight option.
+## M2 — Homepage and regular UI
+- [x] Introduce scoped CSS for known non-gameplay routes.
+- [x] Exclude \`/solo\`, multiplayer, draft, game sessions and unknown routes.
+- [x] Apply non-destructive flat panels, typography, borders, and color accents.
+- [x] Guard client-side navigation so the theme is removed on gameplay routes.
+- [ ] Inspect actual homepage DOM and update selectors to reliably match the current design.
+- [ ] Review deck browsing/builder, guides, sets, and lobby/menu screens individually.
+- [ ] Replace AI-dashboard-style card hierarchy without changing gameplay controls.
+- [ ] Add page-specific theme intensity and before/after testing.
 
-## M3 — Duels-era presentation
-- [ ] Inspect Moxgate homepage, game lobby, deckbuilder, and battlefield DOM.
-- [ ] Theme-specific layouts, tabletop textures, phase/turn styling.
-- [ ] Separate home/lobby/play styles with user-selectable theme intensity.
-- [ ] Avoid intercepting gameplay state and reflowing click targets.
-- [ ] Test responsive behavior and accessibility.
+## M3 — Full local personalization
+- [ ] Image crop/position, blur, brightness, vignette.
+- [ ] Separate background image per regular-UI area.
+- [ ] Named custom themes, restore default, safe backup import.
+- [ ] Color contrast guidance.
+- [ ] More era-accurate artwork-free Duels-inspired presets.
 
-## M4 — Full local customization
-- [ ] Separate menu, battlefield, card-zone, and overlay backgrounds.
-- [ ] Crop, position, brightness, opacity, blur for locally supplied art.
-- [ ] Per-element color picker and contrast checking.
-- [ ] Named themes, themes per screen, reversible changes, backups.
+## M4 — Optional packaged client
+- [ ] Determine whether a branded Windows/Linux packaged wrapper is still useful alongside the extension.
+- [ ] If pursued, launch Moxgate live, without mirroring or hosting.
+- [ ] Test sign-in/session security and updates.
+- [ ] Explore Android only if a reliable non-proxy approach exists.
 
-## M5 — Incremental quality-of-life improvements
-- [ ] Capture and prioritize requests from normal gameplay use.
-- [ ] Add feature flags, emergency disable, compatibility checks.
-- [ ] Regression tests for every supported Moxgate page.
+## M5 — Ongoing maintenance and quality of life
+- [ ] Implement user-requested ordinary UI improvements as real problems arise.
+- [ ] Protect game routes as Moxgate adds new modes.
+- [ ] Regression tests and release packaging.
 
-## Non-goals and hard constraints
-- No hosted MoxgateEnhanced website or GitHub Pages.
-- No reverse proxy, third-party mirrored gameplay service, or recreated rules engine.
-- No bundled extracted proprietary art; optional user images are locally stored.
-- No blanket assertion of PWA ownership over the moxgate.com origin.
-- Theme changes must be reversible; live gameplay safety comes first.
+## Invariants
+- Never ship scraped Duels or official MTG artwork; allow locally supplied user images.
+- Never intercept game logic, alter cards or combat controls, or tamper with rule enforcement.
+- No hosting, proxying, mirroring, telemetry, or account credential collection.
+- All styling must be reversible with the popup's master switch.
