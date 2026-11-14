@@ -14,7 +14,7 @@ function isRegularPage(path){
   if(excluded.test(normalized))return false;
   return normalized==="/"||
     /^(?:\/[a-z]{2})?$/.test(normalized)||
-    /^(?:\/[a-z]{2}\/)?(?:decks|sets|guides|faq|learn|leaderboard|explore|cards|settings|account)(?:\/[^/]*){0,3}$/i.test(normalized);
+    /^\/(?:[a-z]{2}\/)?(?:decks|sets|guides|faq|learn|leaderboard|explore|cards|settings|account)(?:\/[^/]*){0,3}$/i.test(normalized);
 }
 let latestTheme=null;
 let currentPath="";
