@@ -18,7 +18,7 @@
 ## Release packaging
 - [x] Add tag-based UNTESTED Chromium ZIP release automation.
 - [x] Add artifact validation and SHA-256 generation/checks.
-- [ ] Confirm GitHub Actions completes and the first release asset is downloadable.
+- [x] GitHub Actions run 43609679046 completed (14 passed, 0 failed); v0.2.1 UNTESTED ZIP and SHA256SUMS published and reverified.
 - [ ] Confirm extension load in Chrome and Brave on real hardware.
 - [ ] Promote a later version to tested only after hands-on confirmation.
 
