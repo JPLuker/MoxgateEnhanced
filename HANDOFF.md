@@ -16,6 +16,9 @@ Unhosted browser extension that themes the regular Moxgate interface while leavi
 - Next: verify v0.3.1 in live Vivaldi. If the popup reports “console menu unavailable,” inspect source cards and row hierarchy before changing selectors. Check /solo gameplay remains untouched.
 - GitHub issues #1 and #2 remain open until acceptance.
 
+
+- v0.3.1 **UNTESTED** release is published and download reverified: https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.3.1-untested-chromium ; CI run 43627632164 passed 24 tests, rendered three screenshots, and verified the downloaded ZIP against SHA256SUMS.
+
 ## Latest v0.2.3 work, 2026-11-14
 - User screenshot of v0.2.2 established 6 homepage sections detected and gold styling visibly applied, but nested/inset gold rectangles and purple action controls remained.
 - `content.js` `findPanel()` now walks to the widest eligible single-card ancestor instead of picking the first inner wrapper. Regression test reproduced failure before the fix.
