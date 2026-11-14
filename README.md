@@ -10,7 +10,7 @@ An unofficial, **unhosted Chromium extension** that gives the ordinary [Moxgate]
 - **Presets:** Stone Table, Molten Plane, Aether, and Night, plus a fully custom color palette.
 - **Images:** Users may select their own PNG, JPEG, or WebP backdrop (maximum 2 MB), save it locally, and choose whether to display it on Moxgate.
 - **Settings:** Click the extension toolbar icon to open **all controls in a compact popup**. No separate settings website or detour through Extension Details.
-- **Launch:** The popup includes an **Open Moxgate** button to launch the live site in an app-like browser window.
+- **Launch:** The popup includes an **Open Moxgate** button to launch the live site in a normal browser tab, so the extension toolbar remains accessible.
 
 **Gameplay is not restyled.** The content script explicitly excludes the `/solo` battlefield, multiplayer sessions, draft, conquest, and other routes that represent active games. Themes are only applied on selected known non-gameplay routes (home, deck browser, sets, guides, etc.). Unknown routes are left alone until verified.
 
@@ -22,7 +22,7 @@ An unofficial, **unhosted Chromium extension** that gives the ordinary [Moxgate]
 4. Choose **Load unpacked** and select the folder that contains `manifest.json`.
 5. Pin **MoxgateEnhanced** to your browser toolbar.
 6. **Click the extension icon**: theme controls open in-place. Change a preset, pick colors, or choose your own artwork.
-7. Open Moxgate normally or click **Open Moxgate** inside the popup.
+7. Open Moxgate normally or click **Open Moxgate** inside the popup. The site opens in a standard tab, keeping the extension icon within reach.
 
 After updating the local repository, click **Reload** on the extension card. Site pages should reflect settings changes without requiring a gameplay refresh. If a change does not appear, refresh the site.
 
