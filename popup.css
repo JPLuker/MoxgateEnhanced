@@ -19,7 +19,7 @@ main{padding:14px 18px 9px}
 .introline{display:flex;justify-content:space-between;color:#bdaa87;letter-spacing:1.5px;font-size:12px;font-weight:700;margin-bottom:13px}
 .field label{display:block;margin-bottom:6px;color:#f0e5d0;font-size:12px}
 select{height:38px;width:100%;background:#2b2720;border:1px solid #5b4b34;color:#eae1d2;padding:0 9px;border-radius:0}
-.site-preview{height:154px;overflow:hidden;position:relative;isolation:isolate;background:var(--backdrop);color:var(--ink);border:2px solid var(--accent);margin-top:15px;box-shadow:0 8px 25px #0005}
+.site-preview{display:grid;grid-template-columns:40% 60%;height:170px;overflow:hidden;position:relative;isolation:isolate;background:var(--backdrop);color:var(--ink);border:2px solid var(--accent);margin-top:15px;box-shadow:0 8px 25px #0005}
 .site-preview::before{content:"";position:absolute;inset:0;z-index:-1;background-image:var(--custom-image);background-size:cover;background-position:center;opacity:var(--image-opacity);pointer-events:none}
 .site-preview::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 25%,#0009 100%)}
 .mini-nav{height:28px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--accent);padding:0 9px;font-size:12px;letter-spacing:1px}
@@ -63,3 +63,13 @@ footer>span{color:#b3a58c;font-size:12px;text-align:right}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 #site-diagnostic{display:block;margin:6px 0 0;color:#dac69d;font-size:12px;min-height:16px}
+
+/* Miniature of the actual console-style home menu, not a generic card dashboard. */
+.mini-mode-nav{min-width:0;padding:13px 0;background:var(--surface);border-right:1px solid var(--accent);display:flex;flex-direction:column}
+.mini-mode-nav strong{font:normal 15px Georgia,serif;color:var(--ink);padding:0 10px 9px}
+.mini-mode-nav span{font:13px Georgia,serif;color:var(--ink);padding:7px 11px;border-left:3px solid transparent}
+.mini-mode-nav span.mini-selected{border-left-color:var(--accent);color:var(--ink);background:linear-gradient(90deg,#ffffff15,transparent)}
+.mini-mode-scene{min-width:0;padding:18px 13px 14px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(115deg,#000b,transparent 100%),radial-gradient(ellipse at 80% 35%,#635149,var(--backdrop))}
+.mini-mode-scene small{font-size:12px;color:var(--accent);letter-spacing:1px}
+.mini-mode-scene strong{font:normal 24px Georgia,serif;color:var(--ink);text-shadow:0 2px 3px #000}
+.mini-mode-scene span{display:inline-block;align-self:flex-start;padding:6px 9px;background:var(--accent);color:#17120d;font-weight:700;font-size:12px}
