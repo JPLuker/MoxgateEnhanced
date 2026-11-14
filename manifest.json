@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "MoxgateEnhanced",
-  "description": "Local-only themes and cosmetic styling for Moxgate.",
-  "version": "0.1.0",
+  "description": "Unhosted client: launch live Moxgate in a dedicated window and apply local-only themes.",
+  "version": "0.1.1",
   "permissions": [
     "storage"
   ],
@@ -25,5 +25,16 @@
   "options_ui": {
     "page": "index.html",
     "open_in_tab": true
+  },
+  "action": {
+    "default_title": "Open MoxgateEnhanced"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icon-192.png",
+    "48": "icon-192.png",
+    "128": "icon-192.png"
   }
 }
