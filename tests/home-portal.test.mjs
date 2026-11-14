@@ -51,7 +51,7 @@ test("select a mode and start the original site's corresponding action",()=>{
  assert.equal(f.api.status.selected,"play");
  assert.equal(portal.querySelector("[data-mge-stage-title]").textContent,"Play with Friends");
  portal.simulate("[data-mge-stage-action]",portal.querySelector("[data-mge-stage-action]"));
- assert.equal(f.actions.play.clicked,1);
+ assert.equal(f.actions.play.clicked,0,"Extension must never synthesize the game click");
  assert.equal(f.api.status.active,false);
  assert.equal(f.row.getAttribute("data-mge-original-row"),null);
 });
@@ -93,22 +93,26 @@ test("missing native Draft action returns to native page",()=>{
  assert.equal(f.row.getAttribute("data-mge-original-row"),null);
 });
 
-test("Solo native control is visible and attached during click handoff",()=>{
- const f=fixture();let observed=false;
- f.actions.solo.click=()=>{
-  observed=f.actions.solo.isConnected&&f.row.getAttribute("data-mge-original-row")===null&&f.api.status.active;
-  f.actions.solo.clicked++;
- };
- f.api.mount(f.panels,f.actions);
- f.main.children[0].simulate("[data-mge-stage-action]",f.main.children[0].querySelector("[data-mge-stage-action]"));
- assert.equal(observed,true,"Native click must occur before custom menu removal");
- assert.equal(f.actions.solo.clicked,1);
- assert.equal(f.api.status.active,false);
-});
-test("native action throwing does not strand custom menu over page",()=>{
- const f=fixture();f.actions.solo.click=()=>{throw Error("native failure")};
+
+test("Solo safely reveals original homepage without invoking native code",()=>{
+ const f=fixture();f.actions.solo.click=()=>{throw Error("Must not invoke a synthetic native click");};
  f.api.mount(f.panels,f.actions);
  assert.doesNotThrow(()=>f.main.children[0].simulate("[data-mge-stage-action]",f.main.children[0].querySelector("[data-mge-stage-action]")));
  assert.equal(f.api.status.active,false);
+ assert.equal(f.api.status.dismissed,true);
  assert.equal(f.row.getAttribute("data-mge-original-row"),null);
+});
+test("Draft and quick-format shortcuts do not synthesize native clicks",()=>{
+ for(const kind of ["draft","shortcut"]){
+  const f=fixture();
+  for(const action of Object.values(f.actions))action.click=()=>{throw Error("Synthetic action");};
+  f.api.mount(f.panels,f.actions);
+  const portal=f.main.children[0];
+  if(kind==="draft"){
+   portal.simulate("[data-mge-choice]",portal.choices.find(x=>x.getAttribute("data-mge-choice")==="draft"));
+   portal.simulate("[data-mge-stage-action]",portal.querySelector("[data-mge-stage-action]"));
+  }else portal.simulate("[data-mge-shortcut]",{});
+  assert.equal(f.api.status.active,false);
+  assert.equal(f.row.getAttribute("data-mge-original-row"),null);
+ }
 });
