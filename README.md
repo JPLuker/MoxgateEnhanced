@@ -37,6 +37,7 @@ Choose **Export JSON** on one client, then **Import JSON** on another. Images ar
 - No external analytics, cloud sync, API keys, remote image downloads, or tracking.
 - Remove the saved image or reset the theme from the editor. Browser/site-data clearing also deletes PWA local data.
 - **Existing Moxgate functionality is not guaranteed to remain compatible with future DOM changes.** Test themed gameplay carefully.
+- Run local checks with `node --test tests/theme.test.mjs`. This is a non-browser validation suite; it does not replace real Moxgate gameplay testing.
 
 ## Attribution and scope
 
