@@ -35,16 +35,21 @@ function label(el){return(el?.textContent||"").replace(/\s+/g," ").trim().toLowe
 function findPanel(heading,kind){
  const viewport=Math.max(root.clientWidth||0,window.innerWidth||0,320);
  const minWidth=Math.min(kind==="hero"?210:250,viewport*.38),minHeight=kind==="hero"?145:72;
- for(let el=heading.parentElement,depth=0;el&&depth<8;el=el.parentElement,depth++){
-  if(el===document.body||el===root)break;
+ let outer=null;
+ // An inner content column often meets the size requirements before the actual card does.
+ // Walk OUTWARD, stopping at groups that contain other named cards, and select the
+ // largest eligible single-card ancestor rather than the first arbitrary wrapper.
+ for(let el=heading.parentElement,depth=0;el&&depth<12;el=el.parentElement,depth++){
+  if(el===document.body||el===root||el.tagName?.toLowerCase()==="main")break;
   const r=el.getBoundingClientRect();
-  if(r.width<minWidth||r.height<minHeight||r.width>viewport*.96||r.height>680)continue;
+  if(r.width>viewport*.96||r.height>680)break;
   const headings=Array.from(el.querySelectorAll("h1,h2,h3,h4,[role=heading]"));
-  const matches=headings.filter(x=>Object.values(heroes).includes(label(x))||Object.values(features).includes(label(x)));
-  if(matches.length>1)continue;
-  return el;
+  const matches=headings.filter(x=>Object.values(heroes).includes(label(x))||
+      Object.values(features).some(text=>label(x)===text||label(x).startsWith(text+" ")));
+  if(matches.length>1)break;
+  if(r.width>=minWidth&&r.height>=minHeight)outer=el;
  }
- return null;
+ return outer;
 }
 function markHome(){
  resetMarkers();
