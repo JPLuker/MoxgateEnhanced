@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.2] — 2026-11-14
+
+### Fixed
+- Switch from dynamically inserting a page-owned style tag to a stylesheet declared in the Chromium extension manifest.
+- Recognize the Play, Solo and Draft homepage tiles by headings instead of relying on unverified CSS utility classes.
+- Add stronger stone-table styling to homepage panels, main actions, typography and borders.
+- Restore the settings popup to a fixed width instead of shrinking with its own viewport.
+- Show a local status indicating which page the extension sees and how many homepage sections it recognized.
+
+### Verification
+- GitHub Actions build [43611231778](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43611231778) passed 16 automated tests and verified the packaged ZIP and its SHA-256 checksum.
+- Released as [UNTESTED Chromium v0.2.2](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.2-untested-chromium).
+- **Actual live Moxgate appearance and browser popup sizing still require real-device confirmation.** This is not a completed visual bug fix.
+
 ## [0.2.1] — 2026-11-14
 
 ### Added
