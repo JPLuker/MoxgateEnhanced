@@ -59,3 +59,11 @@ html[data-mge-ui="on"][data-mge-page="home"] :is([class*="rounded-xl"],[class*="
 @media(prefers-reduced-motion:reduce){
  html[data-mge-ui="on"] *{scroll-behavior:auto!important}
 }
+
+/* Do not draw a second frame around inset text blocks on secondary banners.
+   The console menu replaces only the primary mode strip. */
+html[data-mge-ui="on"][data-mge-page="home"]
+:is([data-mge-tile="tutorial"],[data-mge-tile="conquest"],[data-mge-tile="sagas"],[data-mge-tile="star"]){
+  border:0!important;outline:0!important;box-shadow:none!important;
+  border-radius:inherit!important
+}
