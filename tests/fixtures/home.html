@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MoxgateEnhanced visual regression fixture</title>
+<link rel="stylesheet" href="../../content.css">
+<link rel="stylesheet" href="../../home-portal.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#100e16;color:#eee5d8;font:14px system-ui,sans-serif}
+header{height:58px;background:#1a1721;border-bottom:1px solid #794c90;padding:0 30px;display:flex;align-items:center;gap:25px}
+header strong{font:22px Georgia,serif;color:#cdb576}
+header span:last-child{margin-left:auto;color:#bbb}
+main{padding:18px 26px}
+.brand{height:115px;text-align:center;padding:20px}
+.brand h1{font:32px Georgia,serif;color:#e0b975;margin:0 0 8px}
+.brand p{color:#bab5bc;font-size:13px}
+.original-hero{display:grid;grid-template-columns:28% 44% 28%;height:258px;margin-bottom:20px}
+.original-hero article{border:1px solid #7b5292;background:radial-gradient(circle at 60% 30%,#584160,#13101f 75%);display:grid;place-items:center}
+.original-hero article div{text-align:center}
+.original-hero h2{font:25px Georgia,serif}
+.original-hero button{background:#6221aa;color:white;padding:9px 17px;border:1px solid #a26add;border-radius:7px}
+.trailers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.trailers div{height:95px;background:linear-gradient(110deg,#442a62,#19152b);border:1px solid #6c4981;padding:15px}
+.trailers strong{font:20px Georgia,serif}
+.more{height:130px;background:linear-gradient(90deg,#23182b,#573364);border:1px solid #6c4981;margin-top:14px;padding:25px}
+.more h2{font:28px Georgia,serif;margin:0}
+</style>
+</head>
+<body>
+<header><strong>MOXGATE</strong><span>Explore ▾</span><span>9,073 playing today · Sign in</span></header>
+<main>
+<section class="brand"><h1>MOXGATE</h1><p>Play Magic in your browser, against the computer or with friends.</p></section>
+<section class="original-hero">
+<article><div><h2>Play</h2><p>With a friend, or at an open table.</p><button>Play →</button></div></article>
+<article><div><h2>Solo</h2><p>Full rules enforcement, against an AI opponent.</p><button>Start a game →</button></div></article>
+<article><div><h2>Draft</h2><p>Three packs, then build.</p><button>Start drafting →</button></div></article>
+</section>
+<section class="trailers"><div><strong>Star Trek</strong></div><div><strong>Landing Party</strong></div><div><strong>Klingon Fury</strong></div></section>
+<section class="more"><h2>New to Magic?</h2><p>Five minutes of rules, then a starter deck.</p></section>
+</main>
+<script src="../../home-portal.js"></script>
+<script>
+document.documentElement.setAttribute("data-mge-ui","on");
+document.documentElement.setAttribute("data-mge-page","home");
+const cards=document.querySelectorAll(".original-hero article");
+const panels={play:cards[0],solo:cards[1],draft:cards[2]};
+const actions={play:cards[0].querySelector("button"),solo:cards[1].querySelector("button"),draft:cards[2].querySelector("button")};
+window.MGEHomePortal.mount(panels,actions);
+document.documentElement.dataset.visualReady=String(window.MGEHomePortal.status.active);
+</script>
+</body>
+</html>
