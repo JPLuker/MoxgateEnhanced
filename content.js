@@ -51,6 +51,28 @@ function findPanel(heading,kind){
  }
  return outer;
 }
+function findAction(panel,name){
+ const pattern=actions[name];
+ if(!pattern)return null;
+ for(const el of panel.querySelectorAll("a,button,[role=button]")){
+  if(pattern.test(label(el)))return el;
+ }
+ // Some site controls are styled DIVs containing a text SPAN without a
+ // semantic button element. Mark their whole visible surface, not the text.
+ for(const leaf of panel.querySelectorAll("span,div,strong")){
+  if(leaf.childElementCount>0||!pattern.test(label(leaf)))continue;
+  const r=leaf.getBoundingClientRect();
+  if(r.width>270||r.height>70)continue;
+  let target=leaf;
+  for(let parent=leaf.parentElement,steps=0;parent&&parent!==panel&&steps<4;parent=parent.parentElement,steps++){
+   const box=parent.getBoundingClientRect();
+   if(box.width<50||box.width>270||box.height<25||box.height>72)break;
+   target=parent;
+  }
+  return target;
+ }
+ return null;
+}
 function markHome(){
  resetMarkers();
  mark(document.querySelector("header,nav,[role=banner]"),"data-mge-topbar","on");
@@ -74,9 +96,7 @@ function markHome(){
   if(!panel)continue;
   mark(panel,"data-mge-tile",name);
   mark(heading,"data-mge-heading",name);
-  for(const target of panel.querySelectorAll("a,button,[role=button]")){
-   if(actions[name].test(label(target))){mark(target,"data-mge-action",name);break}
-  }
+  mark(findAction(panel,name),"data-mge-action",name);
  }
  for(const [name,text]of Object.entries(features)){
   const heading=headings.find(h=>label(h)===text||label(h).startsWith(text+" "));
@@ -107,7 +127,8 @@ chrome.storage.onChanged.addListener((changes,area)=>{if(area==="local"&&changes
 chrome.runtime?.onMessage?.addListener((msg,sender,respond)=>{
  if(msg?.type!=="mge:status")return;
  respond({mode:classify(location.pathname),enabled:root.getAttribute("data-mge-ui")==="on",
-  tiles:document.querySelectorAll("[data-mge-tile]").length});
+  tiles:document.querySelectorAll("[data-mge-tile]").length,
+  actions:document.querySelectorAll("[data-mge-action]").length});
 });
 window.addEventListener("popstate",scheduleScan);
 window.addEventListener("hashchange",scheduleScan);
