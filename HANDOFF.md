@@ -3,6 +3,13 @@
 ## Product
 Unhosted browser extension that themes the regular Moxgate interface while leaving live gameplay unchanged. Toolbar icon opens popup settings for presets, colors and local artwork.
 
+## Latest v0.2.3 work, 2026-11-14
+- User screenshot of v0.2.2 established 6 homepage sections detected and gold styling visibly applied, but nested/inset gold rectangles and purple action controls remained.
+- `content.js` `findPanel()` now walks to the widest eligible single-card ancestor instead of picking the first inner wrapper. Regression test reproduced failure before the fix.
+- `content.js` `findAction()` now handles nested text spans/div controls, not only semantic buttons/links. A second regression test reproduced this gap before the fix.
+- `app.js` now displays panel and action match counts. `tests/scope.test.mjs` covers both bugs.
+- Manifest v0.2.3 is ready for automated UNTESTED release, pending CI verification. Do not describe the visual correction as accepted until tested in a real browser.
+
 ## Latest correction, 2026-11-14
 - **v0.2.2** UNTESTED prerelease: https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.2-untested-chromium
 - GitHub Actions run `43611231778`: 16 passed, 0 failed; ZIP and checksums verified after release.

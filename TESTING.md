@@ -1,5 +1,22 @@
 # Testing
 
+## v0.2.3 — 2026-11-14
+
+**Status: Awaiting hands-on verification.** The previous v0.2.2 screenshot shows the theme is active and six homepage sections are detected. The gold frames were wrapped around inner text containers, and some primary CTAs remained purple.
+
+### Regression coverage
+- The frame-selection regression fails against the old first-matching-ancestor algorithm, then passes after selecting the outer single-card ancestor.
+- The CTA regression fails when Solo's action is represented by a nested text span in a div control, then passes after marking the whole button-sized surface.
+- The popup diagnostic should now read `Homepage: N panels · N actions`.
+- `/solo` and other gameplay paths remain explicitly excluded.
+
+### Hands-on checks for this build
+1. On Moxgate home, gold frames should surround the entire Play, Solo, Draft, tutorial and Conquest panels, not smaller inset rectangles.
+2. Play and Solo primary actions should adopt the selected theme accent rather than remain purple; note the popup's panel/action counts.
+3. Popup stays readable and `/solo` gameplay remains unchanged.
+
+---
+
 ## v0.2.2 — 2026-11-14
 
 **Release:** [UNTESTED v0.2.2](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.2-untested-chromium). Automated GitHub Actions verification [run 43611231778](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43611231778): 16 tests passed, 0 failed, packaged nine extension files, ZIP test and re-download SHA-256 verification passed.

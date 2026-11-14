@@ -31,6 +31,14 @@
 - [ ] Confirm popup sizing and accessibility in real Chromium.
 - [ ] Close issues #1 and #2 only after hands-on verification.
 
+## v0.2.3 card framing follow-up
+- [x] Reproduce nested gold border regression with failing test.
+- [x] Select outer card container without crossing multi-card groups.
+- [x] Reproduce and correct nested/nonsemantic primary action matching.
+- [x] Show panel and CTA counts separately in popup diagnostics.
+- [ ] Check full-card frames and themed CTAs in real Moxgate homepage.
+- [ ] Confirm gameplay untouched and review popup readability.
+
 ## M2 — Homepage and regular UI
 - [x] Introduce scoped CSS for known non-gameplay routes.
 - [x] Exclude `/solo`, multiplayer, draft, game sessions and unknown routes.

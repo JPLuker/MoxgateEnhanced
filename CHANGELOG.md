@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.3] — 2026-11-14
+
+### Fixed
+- Homepage borders now use the full outer card container instead of wrapping inset text columns.
+- Hero action detection supports nested span/div controls as well as native links and buttons.
+- The extension popup reports separate matched panel and action counts for easier diagnostics.
+
+### Testing
+- A red regression test reproduced the inner-card border issue, followed by a passing test after the fix.
+- A separate regression reproduced the nested Solo CTA case before it was fixed.
+- Live appearance of v0.2.3 still requires browser confirmation. The v0.2.2 screenshot showed 6 homepage sections detected but gold frames were inset; that issue is being corrected here.
+
 ## [0.2.2] — 2026-11-14
 
 ### Fixed
