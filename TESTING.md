@@ -5,6 +5,7 @@
 **Status: UNTESTED in a real browser.** Automated source checks and CI release validation are required before shipping any ZIP. A successful GitHub Actions run is not hands-on proof.
 
 ### Automated
+GitHub Actions run [43609679046](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43609679046) completed: **14 passed, 0 failed**. Package verification, archive integrity, release asset enumeration, and re-downloaded checksum validation passed.
 - `node --test tests/*.test.mjs`
 - `node scripts/verify-extension.cjs .`
 - `node --check app.js && node --check content.js`
