@@ -14,26 +14,26 @@
 - [ ] Validate extension injection and gameplay states on live Moxgate.
 - [ ] Accessibility and keyboard-only checks.
 
-## M2 — Duels-era presentation
-- [ ] Inspect Moxgate's homepage, game lobby, deckbuilder, and battlefield DOM.
+## M2 — Proper installable client (without hosting)
+- [ ] Evaluate packaged desktop Chromium/WebView wrapper that opens the **live** Moxgate origin.
+- [ ] Ensure locally applied themes work inside the wrapper without cross-origin iframe tricks.
+- [ ] Test Moxgate login, sessions, navigation, multiplayer, and browser protections.
+- [ ] Package installer and portable builds for Windows/Linux first.
+- [ ] Evaluate Android WebView shell as a separate installable APK.
+- [ ] Preserve browser extension as lighter-weight option.
+
+## M3 — Duels-era presentation
+- [ ] Inspect Moxgate homepage, game lobby, deckbuilder, and battlefield DOM.
 - [ ] Theme-specific layouts, tabletop textures, phase/turn styling.
 - [ ] Separate home/lobby/play styles with user-selectable theme intensity.
 - [ ] Avoid intercepting gameplay state and reflowing click targets.
 - [ ] Test responsive behavior and accessibility.
 
-## M3 — Full local customization
+## M4 — Full local customization
 - [ ] Separate menu, battlefield, card-zone, and overlay backgrounds.
 - [ ] Crop, position, brightness, opacity, blur for locally supplied art.
 - [ ] Per-element color picker and contrast checking.
 - [ ] Named themes, themes per screen, reversible changes, backups.
-
-## M4 — Installable client options (no hosting)
-- [ ] Evaluate packaged desktop WebView wrapper to launch the live Moxgate origin with local enhancements.
-- [ ] Evaluate Android native WebView shell as a separate package.
-- [ ] Test session handling, account login, navigation, and external links.
-- [ ] Ensure a normal PWA/browser-app install does not get confused with our independently branded native wrapper.
-- [ ] Keep extension as low-maintenance desktop alternative.
-- [ ] Packaging, build validation, and release distribution via GitHub.
 
 ## M5 — Incremental quality-of-life improvements
 - [ ] Capture and prioritize requests from normal gameplay use.
