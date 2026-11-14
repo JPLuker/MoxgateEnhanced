@@ -29,7 +29,7 @@ function clear(){
  window.MGEHomePortal?.unmount(true);
  resetMarkers();
  root.removeAttribute("data-mge-ui");root.removeAttribute("data-mge-page");root.removeAttribute("data-mge-preset");
- root.style.removeProperty("--mge-artwork");
+ root.style.removeProperty("--mge-artwork");root.style.removeProperty("--mge-image-opacity");
 }
 function mark(el,key,value){if(el){if(el.getAttribute(key)!==value)el.setAttribute(key,value);marked.add(el)}}
 function label(el){return(el?.textContent||"").replace(/\s+/g," ").trim().toLowerCase()}
@@ -114,6 +114,8 @@ function refresh(){
  const kind=classify(location.pathname);
  if(!theme||theme.enabled===false||kind==="game"||kind==="unrecognized"){appliedRoute=location.pathname;clear();return}
  for(const [key,fallback]of Object.entries(defaults))root.style.setProperty("--mge-"+key,color(theme[key],fallback));
+ const opacity=Number.isInteger(theme.opacity)&&theme.opacity>=0&&theme.opacity<=100?theme.opacity:60;
+ root.style.setProperty("--mge-image-opacity",String(opacity/100));
  const art=theme.siteImageEnabled===true?image(theme.image):null;
  if(art)root.style.setProperty("--mge-artwork",'url("'+art+'")');else root.style.removeProperty("--mge-artwork");
  root.setAttribute("data-mge-ui","on");root.setAttribute("data-mge-page",kind);
