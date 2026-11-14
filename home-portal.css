@@ -95,3 +95,31 @@ html[data-mge-ui="on"][data-mge-page="home"] #mge-home-portal{
  #mge-home-portal .mge-home__stage-text h2{font-size:38px!important}
 }
 @media(prefers-reduced-motion:reduce){#mge-home-portal *{transition:none!important}}
+
+
+/* 0.3.2: give the scene its own image layer so the popup opacity control
+   actually changes the live site without fading the action text. */
+html[data-mge-ui="on"][data-mge-page="home"] #mge-home-portal .mge-home__stage{
+  background-image:
+    linear-gradient(100deg,#090808f0 0%,#09080877 53%,#09080824 100%),
+    radial-gradient(circle at 77% 48%,color-mix(in srgb,var(--mge-accent,#d4af69),transparent 83%),transparent 36%),
+    radial-gradient(ellipse at 74% 50%,#463c38,#131110 68%)!important;
+}
+html[data-mge-ui="on"][data-mge-page="home"] #mge-home-portal .mge-home__stage::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:var(--mge-artwork,var(--mge-scene-image,none));
+  background-position:center;background-size:cover;
+  opacity:var(--mge-image-opacity,.6);
+}
+/* The stage remains distinct even when native artwork is unavailable. */
+html[data-mge-ui="on"][data-mge-page="home"] #mge-home-portal .mge-home__stage::after{
+  z-index:0;
+  background:
+    radial-gradient(circle at 77% 49%,transparent 0 90px,color-mix(in srgb,var(--mge-accent,#d4af69),transparent 84%) 91px 92px,transparent 93px 111px,color-mix(in srgb,var(--mge-accent,#d4af69),transparent 90%) 112px 113px,transparent 114px),
+    linear-gradient(90deg,#090808a8 0%,#09080848 49%,#09080813 100%);
+}
+html[data-mge-ui="on"][data-mge-page="home"] #mge-home-portal .mge-home__scene-content{z-index:1}
+@media(max-width:760px){
+ html[data-mge-ui="on"][data-mge-page="home"] #mge-home-portal .mge-home__stage::after{
+  background:linear-gradient(90deg,#090808a8,transparent 100%)}
+}
