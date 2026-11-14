@@ -101,6 +101,7 @@ test("homepage matches three hero tiles and three primary actions",async()=>{
  assert.deepEqual(f.tiles.filter(x=>["play","solo","draft"].includes(x.getAttribute("data-mge-tile"))).length,3);
  assert.equal(f.actions.length,3);
  assert.equal(f.status().tiles,6);
+ assert.equal(f.status().actions,3);
  assert.equal(f.root.getAttribute("data-mge-page"),"home");
 });
 test("gameplay routes never receive normal-UI styling",async()=>{
