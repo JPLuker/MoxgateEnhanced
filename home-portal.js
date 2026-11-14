@@ -80,42 +80,23 @@ function setChoice(id){
   if(artwork)scene.style.setProperty("--mge-scene-image",artwork);
  }
 }
-function triggerOriginal(original){
- if(!original||!original.isConnected||typeof original.click!=="function")return false;
- // A native React handler must run with its own control still attached and
- // visible. Never remove our portal in the middle of the initiating click.
- state.dismissed=true;
- if(state.row)state.row.removeAttribute("data-mge-original-row");
- try{
-  original.click();
- }catch(error){
-  console.error("MoxgateEnhanced: native action failed; original home restored",error);
-  unmount();
-  return false;
- }
- // Defer DOM cleanup until the native click finishes dispatching. Do not
- // remount while navigation is pending.
- queueMicrotask(()=>unmount());
- return true;
-}
-function activateMode(id){
- const action=state.actions?.[id];
- if(triggerOriginal(action))return true;
- // Never present an inert CTA. If site markup changed, restore the native
- // card strip so users can choose the mode without a broken replacement.
+// Stability safeguard: never synthesize clicks into Moxgate's React actions.
+// The browser user must operate the native control directly.
+function revealOriginal(){
  state.dismissed=true;
  unmount();
+}
+function activateMode(){
+ revealOriginal();
  return false;
 }
 function handleClick(event){
  const choice=event.target.closest("[data-mge-choice]");
  if(choice){setChoice(choice.getAttribute("data-mge-choice"));return;}
- if(event.target.closest("[data-mge-restore]")){state.dismissed=true;unmount();return;}
+ if(event.target.closest("[data-mge-restore]")){revealOriginal();return;}
  const shortcut=event.target.closest("[data-mge-shortcut]");
  if(shortcut){
-  const original=state.row?.querySelectorAll("a,button,[role=button]");
-  const index=Number(shortcut.getAttribute("data-mge-shortcut"));
-  if(original&&Number.isInteger(index))if(!triggerOriginal(original[index])){state.dismissed=true;unmount();}
+  revealOriginal();
   return;
  }
  if(event.target.closest("[data-mge-stage-action]")){
