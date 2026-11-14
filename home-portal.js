@@ -82,11 +82,20 @@ function setChoice(id){
 }
 function triggerOriginal(original){
  if(!original||!original.isConnected||typeof original.click!=="function")return false;
- // Leave the native action attached to the page: React handlers require the
- // original control in the live Moxgate DOM when its click is dispatched.
+ // A native React handler must run with its own control still attached and
+ // visible. Never remove our portal in the middle of the initiating click.
  state.dismissed=true;
- unmount();
- original.click();
+ if(state.row)state.row.removeAttribute("data-mge-original-row");
+ try{
+  original.click();
+ }catch(error){
+  console.error("MoxgateEnhanced: native action failed; original home restored",error);
+  unmount();
+  return false;
+ }
+ // Defer DOM cleanup until the native click finishes dispatching. Do not
+ // remount while navigation is pending.
+ queueMicrotask(()=>unmount());
  return true;
 }
 function activateMode(id){
