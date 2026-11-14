@@ -47,7 +47,7 @@ const cards=document.querySelectorAll(".original-hero article");
 const panels={play:cards[0],solo:cards[1],draft:cards[2]};
 const actions={play:cards[0].querySelector("button"),solo:cards[1].querySelector("button"),draft:cards[2].querySelector("button")};
 window.MGEHomePortal.mount(panels,actions);
-document.documentElement.dataset.visualReady=String(window.MGEHomePortal.status.active);
+document.documentElement.dataset.visualReady=String(window.MGEHomePortal.status.active && getComputedStyle(document.querySelector(".original-hero")).display==="none" && getComputedStyle(document.querySelector("#mge-home-portal")).display==="grid");
 </script>
 </body>
 </html>
