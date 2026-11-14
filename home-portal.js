@@ -72,7 +72,7 @@ function setChoice(id){
  put("[data-mge-stage-description]",mode.description);
  put("[data-mge-stage-action]",mode.action);
  const trigger=state.portal.querySelector("[data-mge-stage-action]");
- if(trigger){trigger.disabled=!state.actions?.[id];trigger.setAttribute("aria-label",mode.action+" — "+mode.name);}
+ if(trigger){trigger.disabled=false;trigger.setAttribute("aria-label",mode.action+" — "+mode.name);}
  const scene=state.portal.querySelector("#"+STAGE_ID);
  if(scene){
   scene.style.removeProperty("--mge-scene-image");
@@ -81,11 +81,22 @@ function setChoice(id){
  }
 }
 function triggerOriginal(original){
- if(!original||!original.isConnected)return false;
+ if(!original||!original.isConnected||typeof original.click!=="function")return false;
+ // Leave the native action attached to the page: React handlers require the
+ // original control in the live Moxgate DOM when its click is dispatched.
  state.dismissed=true;
  unmount();
  original.click();
  return true;
+}
+function activateMode(id){
+ const action=state.actions?.[id];
+ if(triggerOriginal(action))return true;
+ // Never present an inert CTA. If site markup changed, restore the native
+ // card strip so users can choose the mode without a broken replacement.
+ state.dismissed=true;
+ unmount();
+ return false;
 }
 function handleClick(event){
  const choice=event.target.closest("[data-mge-choice]");
@@ -95,14 +106,11 @@ function handleClick(event){
  if(shortcut){
   const original=state.row?.querySelectorAll("a,button,[role=button]");
   const index=Number(shortcut.getAttribute("data-mge-shortcut"));
-  if(original&&Number.isInteger(index))triggerOriginal(original[index]);
+  if(original&&Number.isInteger(index))if(!triggerOriginal(original[index])){state.dismissed=true;unmount();}
   return;
  }
  if(event.target.closest("[data-mge-stage-action]")){
-  if(!triggerOriginal(state.actions?.[state.selected])){
-   const status=state.portal?.querySelector("[data-mge-portal-status]");
-   if(status)status.textContent="This mode is unavailable here. Use the original home.";
-  }
+  activateMode(state.selected);
  }
 }
 function createShortcuts(){
