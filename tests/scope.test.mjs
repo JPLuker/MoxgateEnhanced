@@ -37,15 +37,21 @@ function fixture(path="/",theme={enabled:true,preset:"classic"}){
  const header=new Element("header","",1400,70,body);
  const main=new Element("main","",1360,700,body);
  const row=new Element("section","",1300,270,main);
+ const outerCards={};
  for(const [name,width,action] of [["Play",360,"Play →"],["Solo",560,"Start a game →"],["Draft",340,"Start drafting →"]]){
   const card=new Element("article","",width,245,row);
-  const inner=new Element("div","",width-35,130,card);
+  outerCards[name.toLowerCase()]=card;
+  const inner=new Element("div","",width-35,190,card);
   new Element("h2",name,140,35,inner);
   new Element("button",action,155,38,inner);
  }
- for(const name of ["New to Magic?","Conquest","Sagas"]){
-  const card=new Element("article","",460,130,main);
-  new Element("h2",name,200,35,card);
+ const tutorials=new Element("section","",1300,160,main);
+ for(const [name,width] of [["New to Magic?",1270],["Conquest",580],["Sagas",580]]){
+  const container=name==="New to Magic?"?main:tutorials;
+  const card=new Element("article","",width,145,container);
+  outerCards[name.toLowerCase()]=card;
+  const inner=new Element("div","",name==="New to Magic?"?640:310,105,card);
+  new Element("h2",name,200,35,inner);
  }
  let pathname=path,change,respond,onMutation;
  const queue=[];
@@ -65,7 +71,7 @@ function fixture(path="/",theme={enabled:true,preset:"classic"}){
  MutationObserver,setTimeout(fn){queue.push(fn)},console});
  const drain=()=>{for(const fn of queue.splice(0))fn()};
  return{
-  all,root,properties,drain,
+  all,root,outerCards,properties,drain,
   get active(){return root.getAttribute("data-mge-ui")==="on"},
   get tiles(){return all.filter(x=>x.getAttribute("data-mge-tile"))},
   get actions(){return all.filter(x=>x.getAttribute("data-mge-action"))},
@@ -128,4 +134,13 @@ test("images only enter third-party CSS variables when explicitly enabled",async
 test("unrecognized routes remain untouched",async()=>{
  const f=await loaded("/some-new-game-mode");
  assert.equal(f.active,false);
+});
+
+test("homepage gold frames attach to whole cards, not inset text blocks",async()=>{
+ const f=await loaded("/");
+ for(const [name,outer] of Object.entries(f.outerCards)){
+  assert.equal(outer.getAttribute("data-mge-tile"),name==="new to magic?"?"tutorial":name,
+   "Expected the outer card container for "+name);
+ }
+ for(const marked of f.tiles)assert.equal(marked.tag,"article","Gold frame must not surround an inner content element");
 });
