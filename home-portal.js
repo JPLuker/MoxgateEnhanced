@@ -22,7 +22,7 @@ function commonRow(panels){
  }
  return null;
 }
-function sourceActive(){return Boolean(state.portal&&state.row&&document.documentElement.contains(state.row));}
+function sourceActive(){return Boolean(state.portal?.isConnected&&state.row&&document.documentElement.contains(state.row));}
 function sourceImage(panel){
  if(!panel)return null;
  const descendants=[panel,...Array.from(panel.querySelectorAll("img,*")).slice(0,140)];
