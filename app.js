@@ -120,7 +120,7 @@ async function updateSiteStatus(){
   if(state?.mode==="unrecognized"){element.textContent="This page is excluded";return;}
   if(!state?.enabled){element.textContent="Theme disabled on this page";return;}
   element.textContent=state.mode==="home"
-   ?(state.tiles>0?"Homepage: "+state.tiles+" panels · "+(state.actions??0)+" actions":"Homepage detected — no panels found")
+   ?(state.originalHome?"Original Moxgate home":state.portal?"Console home active · "+(state.actions??0)+" modes":"Home detected · console menu unavailable")
    :"Theme active on this page";
  }catch(error){element.textContent="Reload the Moxgate tab to activate the theme";}
 }
