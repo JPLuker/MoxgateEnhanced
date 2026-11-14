@@ -80,7 +80,7 @@ async function importTheme(file){
  current=validate(data);render();persist();
 }
 function events(){
- $("open-moxgate").addEventListener("click",()=>window.open("https://www.moxgate.com/","_blank","noopener,noreferrer"));
+ $("open-moxgate").addEventListener("click",async()=>{try{if(extension&&chrome.windows?.create){await chrome.windows.create({url:"https://www.moxgate.com/",type:"popup",width:1440,height:900});return;}}catch(e){message("Dedicated window unavailable: "+e.message,true);}window.open("https://www.moxgate.com/","_blank","noopener,noreferrer");});
  $("preset").addEventListener("change",e=>{const p=e.target.value;modify(p==="custom"?{preset:p}:{...PRESETS[p],preset:p});});
  for(const k of ["accent","surface","backdrop","text-color"]){
   $(k).addEventListener("input",e=>modify({[k==="text-color"?"text":k]:e.target.value,preset:"custom"}));
@@ -108,16 +108,8 @@ function events(){
  });
  $("reset-theme").addEventListener("click",()=>{if(confirm("Reset colors and remove your image?")){current=defaultTheme();render();persist();}});
 }
-function pwa(){
- if(extension){$("mode-note").textContent="Extension mode: Save here, then open or refresh Moxgate to apply cosmetic changes.";return;}
- if("serviceWorker" in navigator&&(location.protocol==="https:"||["localhost","127.0.0.1"].includes(location.hostname)))navigator.serviceWorker.register("./sw.js").catch(()=>{});
- let promptEvent;
- window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();promptEvent=e;$("install-pwa").hidden=false;});
- $("install-pwa").addEventListener("click",async()=>{if(promptEvent){promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;$("install-pwa").hidden=true;}});
- window.addEventListener("appinstalled",()=>{$("install-pwa").hidden=true;});
-}
 async function init(){
- events();pwa();
+ events();
  try{const saved=await load();if(saved)current=validate(saved);render();message(extension?"Extension settings loaded. Open Moxgate to apply.":"Ready. Settings are local to this browser.");}
  catch(error){render();message("Local storage unavailable: "+error.message,true);}
 }
