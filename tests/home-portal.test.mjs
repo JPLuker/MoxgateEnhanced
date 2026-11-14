@@ -31,7 +31,7 @@ function fixture(){
  for(const id of ["play","solo","draft"]){const panel=row.appendChild(new El("article"));panels[id]=panel;const action=panel.appendChild(new El("button"));panel.controls=[action];actions[id]=action;}
  row.controls=Object.values(actions);
  const document={body,documentElement:root,createElement:tag=>tag==="section"?new Portal():new El(tag)};
- const window={};runInNewContext(script,{document,window,getComputedStyle:()=>({backgroundImage:"none"})});
+ const window={};runInNewContext(script,{document,window,getComputedStyle:()=>({backgroundImage:"none"}),queueMicrotask:callback=>callback(),console});
  return{api:window.MGEHomePortal,row,main,panels,actions};
 }
 test("console mode menu replaces only the three-card hero strip",()=>{
@@ -89,6 +89,26 @@ test("missing native Draft action returns to native page",()=>{
  const portal=f.main.children[0];const draft=portal.choices.find(b=>b.getAttribute("data-mge-choice")==="draft");
  portal.simulate("[data-mge-choice]",draft);
  portal.simulate("[data-mge-stage-action]",portal.querySelector("[data-mge-stage-action]"));
+ assert.equal(f.api.status.active,false);
+ assert.equal(f.row.getAttribute("data-mge-original-row"),null);
+});
+
+test("Solo native control is visible and attached during click handoff",()=>{
+ const f=fixture();let observed=false;
+ f.actions.solo.click=()=>{
+  observed=f.actions.solo.isConnected&&f.row.getAttribute("data-mge-original-row")===null&&f.api.status.active;
+  f.actions.solo.clicked++;
+ };
+ f.api.mount(f.panels,f.actions);
+ f.main.children[0].simulate("[data-mge-stage-action]",f.main.children[0].querySelector("[data-mge-stage-action]"));
+ assert.equal(observed,true,"Native click must occur before custom menu removal");
+ assert.equal(f.actions.solo.clicked,1);
+ assert.equal(f.api.status.active,false);
+});
+test("native action throwing does not strand custom menu over page",()=>{
+ const f=fixture();f.actions.solo.click=()=>{throw Error("native failure")};
+ f.api.mount(f.panels,f.actions);
+ assert.doesNotThrow(()=>f.main.children[0].simulate("[data-mge-stage-action]",f.main.children[0].querySelector("[data-mge-stage-action]")));
  assert.equal(f.api.status.active,false);
  assert.equal(f.row.getAttribute("data-mge-original-row"),null);
 });
