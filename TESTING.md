@@ -2,11 +2,12 @@
 
 ## v0.2.3 — 2026-11-14
 
-**Status: Awaiting hands-on verification.** The previous v0.2.2 screenshot shows the theme is active and six homepage sections are detected. The gold frames were wrapped around inner text containers, and some primary CTAs remained purple.
+**Status: CI passed (19 tests, 0 failures), live browser acceptance pending.** [UNTESTED v0.2.3](https://github.com/JPLuker/MoxgateEnhanced/releases/tag/v0.2.3-untested-chromium) was built and reverified in [GitHub Actions run 43615193780](https://github.com/JPLuker/MoxgateEnhanced/actions/runs/43615193780). The previous v0.2.2 screenshot shows the theme is active and six homepage sections are detected. The gold frames were wrapped around inner text containers, and some primary CTAs remained purple.
 
 ### Regression coverage
 - The frame-selection regression fails against the old first-matching-ancestor algorithm, then passes after selecting the outer single-card ancestor.
 - The CTA regression fails when Solo's action is represented by a nested text span in a div control, then passes after marking the whole button-sized surface.
+- A separate initial test failure was due to the fixture not returning matched action markers; corrected before the publishing run.
 - The popup diagnostic should now read `Homepage: N panels · N actions`.
 - `/solo` and other gameplay paths remain explicitly excluded.
 
