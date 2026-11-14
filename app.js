@@ -47,7 +47,7 @@ function message(text,error=false){$("status").textContent=text;$("status").styl
 function persist(){
  const snapshot={...current};
  queue=queue.catch(()=>{}).then(()=>save(snapshot));
- queue.then(()=>message("Saved on this device.")).catch(e=>message("Save failed: "+e.message,true));
+ queue.then(()=>{message("Saved on this device.");updateSiteStatus();}).catch(e=>message("Save failed: "+e.message,true));
 }
 function render(){
  for(const k of ["accent","surface","backdrop"])$(k).value=current[k];
@@ -108,9 +108,25 @@ function events(){
  });
  $("reset-theme").addEventListener("click",()=>{if(confirm("Reset colors and remove your image?")){current=defaultTheme();render();persist();}});
 }
+async function updateSiteStatus(){
+ const element=$("site-diagnostic");
+ if(!extension||!chrome.tabs?.query||!chrome.tabs?.sendMessage){element.textContent="Site status unavailable";return;}
+ try{
+  const [tab]=await chrome.tabs.query({active:true,currentWindow:true});
+  if(!tab?.id){element.textContent="No active tab";return;}
+  if(!/^https:\/\/(?:www\.)?moxgate\.com\//.test(tab.url||"")){element.textContent="Open Moxgate to apply a theme";return;}
+  const state=await chrome.tabs.sendMessage(tab.id,{type:"mge:status"});
+  if(state?.mode==="game"){element.textContent="Gameplay unchanged";return;}
+  if(state?.mode==="unrecognized"){element.textContent="This page is excluded";return;}
+  if(!state?.enabled){element.textContent="Theme disabled on this page";return;}
+  element.textContent=state.mode==="home"
+   ?(state.tiles>0?"Homepage styled: "+state.tiles+" sections":"Homepage detected — no sections found")
+   :"Theme active on this page";
+ }catch(error){element.textContent="Reload the Moxgate tab to activate the theme";}
+}
 async function init(){
  events();
- try{const saved=await load();if(saved)current=validate(saved);render();message(extension?"Extension settings loaded. Open Moxgate to apply.":"Ready. Settings are local to this browser.");}
+ try{const saved=await load();if(saved)current=validate(saved);render();message(extension?"Settings loaded.":"Ready. Settings are local to this browser.");await updateSiteStatus();}
  catch(error){render();message("Local storage unavailable: "+error.message,true);}
 }
 init();
