@@ -22,6 +22,15 @@
 - [ ] Confirm extension load in Chrome and Brave on real hardware.
 - [ ] Promote a later version to tested only after hands-on confirmation.
 
+## v0.2.2 visual correction
+- [x] Move style rules into extension-declared `content.css`.
+- [x] Add heading-based homepage panel identification and high-contrast Duels-inspired presentation.
+- [x] Restore popup fixed width and expose homepage section diagnostic.
+- [x] Publish verified UNTESTED v0.2.2 ZIP with 16 automated tests passing.
+- [ ] Confirm live homepage visibly changes, especially Play / Solo / Draft.
+- [ ] Confirm popup sizing and accessibility in real Chromium.
+- [ ] Close issues #1 and #2 only after hands-on verification.
+
 ## M2 — Homepage and regular UI
 - [x] Introduce scoped CSS for known non-gameplay routes.
 - [x] Exclude `/solo`, multiplayer, draft, game sessions and unknown routes.
