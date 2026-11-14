@@ -80,7 +80,7 @@ async function importTheme(file){
  current=validate(data);render();persist();
 }
 function events(){
- $("open-moxgate").addEventListener("click",async()=>{try{if(extension&&chrome.windows?.create){await chrome.windows.create({url:"https://www.moxgate.com/",type:"popup",width:1440,height:900});return;}}catch(e){message("Dedicated window unavailable: "+e.message,true);}window.open("https://www.moxgate.com/","_blank","noopener,noreferrer");});
+ $("open-moxgate").addEventListener("click",async()=>{try{if(extension&&chrome.tabs?.create){await chrome.tabs.create({url:"https://www.moxgate.com/"});window.close();return;}}catch(e){message("Could not open a browser tab: "+e.message,true);}window.open("https://www.moxgate.com/","_blank","noopener,noreferrer");});
  $("preset").addEventListener("change",e=>{const p=e.target.value;modify(p==="custom"?{preset:p}:{...PRESETS[p],preset:p});});
  for(const k of ["accent","surface","backdrop","text-color"]){
   $(k).addEventListener("input",e=>modify({[k==="text-color"?"text":k]:e.target.value,preset:"custom"}));
